@@ -5,8 +5,8 @@ public interface ExercisesName {
     String FACE_PULLS = "facePulls";
     String UPRIGHT_ROWS = "uprightRows";
     String STANDING_DUMBBELL_PRESS = "standingDumbbellPress";
-    String Prone_Reverse_Fly = "proneReverseFFly";
-    String Lateral_Raises = "lateralRaises";
+    String PRONE_REVERSE_FFLY = "proneReverseFFly";
+    String LATERAL_RAISES = "lateralRaises";
     String LIFTING_DUMBBELLS_IN_FRONT_OF_YOU = "liftingDumbbellsInFrontOfYou";
     String BARBELL_CURL = "barbellCurl";
     String DUMBBELL_CURL = "dumbbellCurl";
