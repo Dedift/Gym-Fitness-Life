@@ -48,8 +48,10 @@ public class Order extends BaseEntity<Integer> {
         this.countTrain = countTrain;
         this.purpose = purpose;
         this.season = season;
-        this.price = Objects.nonNull(season) ?
-                PriceCalculator.mathPriceBySeason(season, user) : PriceCalculator.mathPriceByCountTrain(countTrain, user);
+        if(Objects.nonNull(user)) {
+            this.price = Objects.nonNull(season) ?
+                    PriceCalculator.mathPriceBySeason(season, user) : PriceCalculator.mathPriceByCountTrain(countTrain, user);
+        }
         this.user = user;
     }
 }

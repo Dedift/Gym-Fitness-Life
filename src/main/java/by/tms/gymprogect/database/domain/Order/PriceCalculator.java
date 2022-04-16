@@ -1,8 +1,8 @@
 package by.tms.gymprogect.database.domain.Order;
 
 import by.tms.gymprogect.database.domain.Number;
-
 import by.tms.gymprogect.database.domain.User.User;
+
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

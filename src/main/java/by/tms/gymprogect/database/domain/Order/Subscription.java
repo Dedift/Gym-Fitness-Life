@@ -19,7 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -45,8 +44,8 @@ public class Subscription extends BaseEntity<Integer> {
     public Subscription(LocalDate timeOfAction, int countTrain, Order order, User user) {
         this.order = order;
         this.user = user;
-        if(countTrain > Number.ZERO) {
-            this.countRemainingTrain = SubscriptionHelper.mathCountRemainingTrain(countTrain, user);
+        if(order.getCountTrain() > Number.ZERO) {
+            this.countRemainingTrain = SubscriptionHelper.mathCountRemainingTrain(order.getCountTrain(), user);
         } else {
             this.timeOfAction = SubscriptionHelper.mathTimeOfAction(order, user);
         }
