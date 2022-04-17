@@ -217,7 +217,7 @@ public class DatabaseHelper {
                                 findExerciseByName(ExercisesName.CLOSE_GRIP_BENCH_PRESS, session),
                                 findExerciseByName(ExercisesName.BICYCLE_CRUNCH_SITTING, session)))
                         .countSetsPerExercise(Number.FOUR)
-                        .countRepetitionsPerSet(Number.FIFTEEN)
+                        .countRepetitionsPerSet(Number.NINE)
                         .build()));
         PersonalTrainer olgaNovikova = PersonalTrainer.builder()
                 .firstName(OLGA)

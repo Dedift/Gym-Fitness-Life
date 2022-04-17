@@ -72,7 +72,7 @@ class TrainingDayDaoImplTest {
         criteria
                 .select(root)
                 .where(
-                        cb.equal(root.get(TrainingDay_.countRepetitionsPerSet), Number.TWENTY_FIVE)
+                        cb.equal(root.get(TrainingDay_.countRepetitionsPerSet), Number.NINE)
                 );
         Optional<TrainingDay> maybeTrainingDayByCountRepetitionsPerSet =
                 Optional.ofNullable(session.createQuery(criteria).getSingleResult());
