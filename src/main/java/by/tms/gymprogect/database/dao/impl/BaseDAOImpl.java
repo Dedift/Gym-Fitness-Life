@@ -27,7 +27,7 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
     protected SessionFactory sessionFactory;
     private Class<E> clazz;
 
-    public BaseDAOImpl() {
+    protected BaseDAOImpl() {
         Type genericSuperclass = getClass().getGenericSuperclass();
         clazz = (Class<E>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[1];
     }
