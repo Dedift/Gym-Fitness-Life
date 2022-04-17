@@ -1,7 +1,6 @@
 package by.tms.gymprogect.database.dto;
 
 import by.tms.gymprogect.database.domain.User.Gender;
-import by.tms.gymprogect.database.domain.User.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,12 +18,13 @@ import java.util.Set;
 @Setter
 @Builder
 @ToString
-public class PersonalTrainerDTO {
+public class PersonalTrainerDTO extends BaseDTO<Integer> {
 
     private String firstName;
     private String lastName;
     private Gender gender;
     private LocalDate dateOfBirth;
     private int experience;
-    private Set<User> wards;
+    @ToString.Exclude
+    private Set<UserDTO> wards;
 }
