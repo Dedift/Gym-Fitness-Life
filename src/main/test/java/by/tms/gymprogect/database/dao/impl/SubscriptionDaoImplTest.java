@@ -35,7 +35,7 @@ import java.util.Optional;
 @Transactional
 class SubscriptionDaoImplTest {
 
-    protected static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
+    private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
     @Autowired
     private SubscriptionDaoImpl subscriptionDao;
     @Autowired

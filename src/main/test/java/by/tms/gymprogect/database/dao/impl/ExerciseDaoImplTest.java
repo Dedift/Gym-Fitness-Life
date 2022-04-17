@@ -32,8 +32,8 @@ import java.util.Optional;
 @Transactional
 class ExerciseDaoImplTest {
 
-    protected static final String ANY_EXERCISE = "anyExercise";
-    protected static final String NEW_EXERCISE = "newExercise";
+    private static final String ANY_EXERCISE = "anyExercise";
+    private static final String NEW_EXERCISE = "newExercise";
     @Autowired
     private ExerciseDaoImpl exerciseDao;
     @Autowired

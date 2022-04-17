@@ -32,10 +32,10 @@ import java.util.Optional;
 @Transactional
 class PersonalTrainerDaoImplTest {
 
-    protected static final String VITALIY = "Vitaliy";
-    protected static final String ZYEV = "Zyev";
-    protected static final String OLGA = "Olga";
-    protected static final String NOVIKOVA = "Novikova";
+    private static final String VITALIY = "Vitaliy";
+    private static final String ZYEV = "Zyev";
+    private static final String OLGA = "Olga";
+    private static final String NOVIKOVA = "Novikova";
     @Autowired
     private PersonalTrainerDaoImpl personalTrainerDao;
     @Autowired

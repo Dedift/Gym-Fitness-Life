@@ -32,7 +32,7 @@ import java.util.Optional;
 @Transactional
 class TrainingDayDaoImplTest {
 
-    protected static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
+    private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
     @Autowired
     private TrainingDayDaoImpl trainingDayDao;
     @Autowired

@@ -31,8 +31,8 @@ import java.util.Optional;
 @Transactional
 class ReviewDaoImplTest {
 
-    protected static final String I_LIKE_THIS_GYM = "I like this gym!";
-    protected static final String THIS_GYM_IS_WONDERFUL = "This gym is wonderful!";
+    private static final String I_LIKE_THIS_GYM = "I like this gym!";
+    private static final String THIS_GYM_IS_WONDERFUL = "This gym is wonderful!";
     @Autowired
     private ReviewDaoImpl reviewDao;
     @Autowired

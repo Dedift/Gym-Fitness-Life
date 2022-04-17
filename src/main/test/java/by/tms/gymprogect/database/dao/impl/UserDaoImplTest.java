@@ -36,11 +36,11 @@ import java.util.Optional;
 @Transactional
 class UserDaoImplTest {
 
-    protected static final String POPOVA_GMAIL_COM = "Popova@gmail.com";
-    protected static final String NEW_EMAIL_GMAIL_COM = "newemail@gmail.com";
-    protected static final String POPOVA = "Popova";
-    protected static final String PAVEL = "Pavel";
-    protected static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
+    private static final String POPOVA_GMAIL_COM = "Popova@gmail.com";
+    private static final String NEW_EMAIL_GMAIL_COM = "newemail@gmail.com";
+    private static final String POPOVA = "Popova";
+    private static final String PAVEL = "Pavel";
+    private static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
     @Autowired
     private UserDaoImpl userDao;
     @Autowired
