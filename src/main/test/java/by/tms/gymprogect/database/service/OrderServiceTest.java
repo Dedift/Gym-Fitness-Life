@@ -104,8 +104,8 @@ class OrderServiceTest {
 
     @Test
     void findOrdersWhereCountTrainLess() {
-        List<OrderDTO> orders = orderService.findOrdersWhereCountTrainMore(15);
-        Assertions.assertEquals(Number.ONE, orders.size());
+        List<OrderDTO> orders = orderService.findOrdersWhereCountTrainLess(Number.FIFTEEN);
+        Assertions.assertEquals(Number.TWO, orders.size());
     }
 
 
