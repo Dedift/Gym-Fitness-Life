@@ -9,6 +9,10 @@ import by.tms.gymprogect.database.domain.User.Review;
 import by.tms.gymprogect.database.domain.User.User;
 
 import lombok.experimental.UtilityClass;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.Collection;
@@ -17,7 +21,13 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class ModelMapper {
+
     private static final org.modelmapper.ModelMapper MODEL_MAPPER;
+    private static final String MAP_FROM_TO = "Map from: {} to: {}";
+    private static final String MAPPED_OBJECT = "Mapped object: {}";
+    private static final String MAP_ALL_FROM_TO = "Map all from: {} to: {}";
+    private static final String MAPPED_COLLECTION = "Mapped collection: {}";
+    private Logger logger = LogManager.getLogger(ModelMapper.class);
 
     static {
         MODEL_MAPPER = new org.modelmapper.ModelMapper();
@@ -49,15 +59,21 @@ public class ModelMapper {
      *  Create a DTO from an entity, or vice versa
      */
     public static <D, T> D map(final T entityOrDTO, Class<D> outClass) {
-        return MODEL_MAPPER.map(entityOrDTO, outClass);
+        logger.debug(MAP_FROM_TO, entityOrDTO, outClass.getSimpleName());
+        D map = MODEL_MAPPER.map(entityOrDTO, outClass);
+        logger.debug(MAPPED_OBJECT, map);
+        return map;
     }
 
     /**
      *  Create DTOs from entities, or vice versa
      */
     public static <D, T> List<D> mapAll(final Collection<T> fromThis, Class<D> toThis) {
-        return fromThis.stream()
+        logger.debug(MAP_ALL_FROM_TO, fromThis, toThis.getSimpleName());
+        List<D> collection = fromThis.stream()
                 .map(entityOrDTO -> map(entityOrDTO, toThis))
                 .collect(Collectors.toList());
+        logger.debug(MAPPED_COLLECTION, collection);
+        return collection;
     }
 }

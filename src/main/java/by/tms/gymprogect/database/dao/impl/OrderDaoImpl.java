@@ -6,6 +6,9 @@ import by.tms.gymprogect.database.domain.Order.Order_;
 import by.tms.gymprogect.database.domain.Order.Season;
 import by.tms.gymprogect.database.domain.Train.Purpose;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.hibernate.Session;
 
 import org.springframework.stereotype.Repository;
@@ -18,6 +21,12 @@ import java.util.List;
 
 @Repository
 public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDao {
+
+    private static final String FIND_ORDERS_BY_SEASON = "Find orders: {} by season: {}";
+    private static final String FIND_ORDERS_BY_PURPOSE = "Find orders: {} by purpose: {}";
+    private static final String FIND_ORDERS_WORKOUTS_MORE = "Find orders: {} in which the number of workouts is more:{}";
+    private static final String FIND_ORDERS_WORKOUTS_LESS = "Find orders: {} in which the number of workouts is less: {}";
+    private Logger logger = LogManager.getLogger(OrderDaoImpl.class);
 
     /**
      * Find and get orders by season
@@ -33,14 +42,16 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
                 .where(
                         cb.equal(root.get(Order_.season), season)
                 );
-        return session.createQuery(criteria).getResultList();
+        List<Order> orders = session.createQuery(criteria).getResultList();
+        logger.debug(FIND_ORDERS_BY_SEASON, orders, season);
+        return orders;
     }
 
     /**
      * Find and get orders by purpose
      */
     @Override
-    public List<Order> findByPurpose(Purpose purpose){
+    public List<Order> findByPurpose(Purpose purpose) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Order> criteria = cb.createQuery(Order.class);
@@ -50,7 +61,9 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
                 .where(
                         cb.equal(root.get(Order_.purpose), purpose)
                 );
-        return session.createQuery(criteria).getResultList();
+        List<Order> orders = session.createQuery(criteria).getResultList();
+        logger.debug(FIND_ORDERS_BY_PURPOSE, orders, purpose);
+        return orders;
     }
 
     /**
@@ -67,7 +80,9 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
                 .where(
                         cb.greaterThan(root.get(Order_.countTrain), countTrain)
                 );
-        return session.createQuery(criteria).getResultList();
+        List<Order> orders = session.createQuery(criteria).getResultList();
+        logger.debug(FIND_ORDERS_WORKOUTS_MORE, orders, countTrain);
+        return orders;
     }
 
     /**
@@ -84,7 +99,8 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
                 .where(
                         cb.lessThan(root.get(Order_.countTrain), countTrain)
                 );
-        return session.createQuery(criteria).getResultList();
+        List<Order> orders = session.createQuery(criteria).getResultList();
+        logger.debug(FIND_ORDERS_WORKOUTS_LESS, orders, countTrain);
+        return orders;
     }
-
 }

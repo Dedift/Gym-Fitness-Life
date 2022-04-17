@@ -5,6 +5,9 @@ import by.tms.gymprogect.database.domain.BaseEntity;
 
 import lombok.Getter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -17,19 +20,28 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
 import java.util.List;
 import java.util.Optional;
 
 @Getter
 public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<PK>> implements BaseDAO<PK, E> {
 
+    private static final String DELETE_ENTITY = "Delete entity: {}";
+    private static final String UPDATE_ENTITY_WITH_ID = "Update entity: {} with id: {}";
+    private static final String SAVE_ENTITY_WITH_ID = "Save entity: {} with id: {}";
+    private static final String FIND_ENTITY_BY_ID = "Find entity: {} by id: {}";
+    private static final String FIND_ALL_ENTITIES = "Find all entities: {}";
+    private static final String ENTITY_CLASS = "Entity class: {}";
     @Autowired
     protected SessionFactory sessionFactory;
+    private Logger logger = LogManager.getLogger(BaseDAOImpl.class);
     private Class<E> clazz;
 
     public BaseDAOImpl() {
         Type genericSuperclass = getClass().getGenericSuperclass();
         clazz = (Class<E>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[1];
+        logger.debug(ENTITY_CLASS, clazz);
     }
 
     /**
@@ -41,7 +53,9 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<E> criteria = cb.createQuery(clazz);
         Root<E> root = criteria.from(clazz);
-        return session.createQuery(criteria.select(root)).getResultList();
+        List<E> entities = session.createQuery(criteria.select(root)).getResultList();
+        logger.debug(FIND_ALL_ENTITIES, entities);
+        return entities;
     }
 
     /**
@@ -51,6 +65,7 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
     public Optional<E> findById(PK id) {
         Session session = sessionFactory.getCurrentSession();
         Optional<E> result = Optional.ofNullable(session.find(clazz, id));
+        logger.debug(FIND_ENTITY_BY_ID, result, id);
         return result;
     }
 
@@ -61,6 +76,7 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
     public PK save(E entity) {
         Session session = sessionFactory.getCurrentSession();
         Serializable id = session.save(entity);
+        logger.debug(SAVE_ENTITY_WITH_ID, entity, id);
         return (PK) id;
     }
 
@@ -71,6 +87,7 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
     public void update(E entity) {
         Session session = sessionFactory.getCurrentSession();
         session.update(entity);
+        logger.debug(UPDATE_ENTITY_WITH_ID, entity, entity.getId());
     }
 
     /**
@@ -80,5 +97,6 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
     public void delete(E entity) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(entity);
+        logger.debug(DELETE_ENTITY, entity);
     }
 }

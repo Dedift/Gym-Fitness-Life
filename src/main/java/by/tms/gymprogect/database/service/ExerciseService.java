@@ -5,6 +5,9 @@ import by.tms.gymprogect.database.domain.Train.Exercise;
 import by.tms.gymprogect.database.dto.ExerciseDTO;
 import by.tms.gymprogect.database.dto.ModelMapper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +19,17 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class ExerciseService {
 
+    private static final String ACCEPTED_TO_SAVE = "Accepted to save exerciseDTO: {}";
+    private static final String SAVE_EXERCISE_WITH_ID = "Save exercise: {} with id: {}";
+    private static final String FIND_ALL_EXERCISES = "Find all exercises: {}";
+    private static final String FIND_EXERCISE_BY_ID = "Find exercise: {} by id: {}";
+    private static final String FIND_EXERCISE_BY_NAME = "Find exercise: {} by name: {}";
+    private static final String ACCEPTED_TO_UPDATE = "Accepted to update exerciseDTO: {}";
+    private static final String ACCEPTED_TO_DELETE = "Accepted to delete exerciseDTO: {}";
+    private static final String UPDATE_EXERCISE = "Update exercise: {}";
+    private static final String DELETE_EXERCISE = "Delete exercise: {}";
     private ExerciseDao exerciseDao;
-
+    private Logger logger = LogManager.getLogger(ExerciseService.class);
 
     @Autowired
     public ExerciseService(ExerciseDao exerciseDao) {
@@ -29,8 +41,11 @@ public class ExerciseService {
      */
     @Transactional
     public Integer save(ExerciseDTO exerciseDTO) {
+        logger.debug(ACCEPTED_TO_SAVE, exerciseDTO);
         Exercise exercise = ModelMapper.map(exerciseDTO, Exercise.class);
-        return exerciseDao.save(exercise);
+        Integer id = exerciseDao.save(exercise);
+        logger.debug(SAVE_EXERCISE_WITH_ID, exercise, id);
+        return id;
     }
 
     /**
@@ -38,6 +53,7 @@ public class ExerciseService {
      */
     public List<ExerciseDTO> findAll() {
         List<Exercise> exercises = exerciseDao.findAll();
+        logger.debug(FIND_ALL_EXERCISES, exercises);
         return ModelMapper.mapAll(exercises, ExerciseDTO.class);
     }
 
@@ -49,6 +65,7 @@ public class ExerciseService {
         ExerciseDTO exerciseDTO = ExerciseDTO.builder().build();
         if (maybeExercise.isPresent()) {
             Exercise exercise = maybeExercise.get();
+            logger.debug(FIND_EXERCISE_BY_ID, exercise, id);
             exerciseDTO = ModelMapper.map(exercise, ExerciseDTO.class);
         }
         return Optional.ofNullable(exerciseDTO);
@@ -62,6 +79,7 @@ public class ExerciseService {
         ExerciseDTO exerciseDTO = ExerciseDTO.builder().build();
         if (maybeExercise.isPresent()) {
             Exercise exercise = maybeExercise.get();
+            logger.debug(FIND_EXERCISE_BY_NAME, exercise, name);
             exerciseDTO = ModelMapper.map(exercise, ExerciseDTO.class);
         }
         return Optional.ofNullable(exerciseDTO);
@@ -72,8 +90,10 @@ public class ExerciseService {
      */
     @Transactional
     public void update(ExerciseDTO exerciseDTO) {
+        logger.debug(ACCEPTED_TO_UPDATE, exerciseDTO);
         Exercise exercise = ModelMapper.map(exerciseDTO, Exercise.class);
         exerciseDao.update(exercise);
+        logger.debug(UPDATE_EXERCISE, exercise);
     }
 
     /**
@@ -81,7 +101,9 @@ public class ExerciseService {
      */
     @Transactional
     public void delete(ExerciseDTO exerciseDTO) {
+        logger.debug(ACCEPTED_TO_DELETE, exerciseDTO);
         Exercise exercise = ModelMapper.map(exerciseDTO, Exercise.class);
         exerciseDao.delete(exercise);
+        logger.debug(DELETE_EXERCISE, exercise);
     }
 }

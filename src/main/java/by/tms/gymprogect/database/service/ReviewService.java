@@ -5,6 +5,9 @@ import by.tms.gymprogect.database.domain.User.Review;
 import by.tms.gymprogect.database.dto.ModelMapper;
 import by.tms.gymprogect.database.dto.ReviewDTO;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,16 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class ReviewService {
 
+    private static final String DELETE_REVIEW = "Delete review: {}";
+    private static final String ACCEPTED_TO_DELETE = "Accepted to delete reviewDTO: {}";
+    private static final String UPDATE_REVIEW = "Update review: {}";
+    private static final String ACCEPTED_TO_UPDATE = "Accepted to update reviewDTO: {}";
+    private static final String FIND_REVIEW_BY_ID = "Find review: {} by id:{}";
+    private static final String FIND_ALL_REVIEWS = "Find all reviews: {}";
+    private static final String SAVE_REVIEW_WITH_ID = "Save review: {} with id:{}";
+    private static final String ACCEPTED_TO_SAVE = "Accepted to save reviewDTO: {}";
     private ReviewDao reviewDao;
+    private Logger logger = LogManager.getLogger(ReviewService.class);
 
     @Autowired
     public ReviewService(ReviewDao reviewDao) {
@@ -28,16 +40,20 @@ public class ReviewService {
      */
     @Transactional
     public Integer save(ReviewDTO reviewDTO) {
+        logger.debug(ACCEPTED_TO_SAVE, reviewDTO);
         Review review = ModelMapper.map(reviewDTO, Review.class);
-        return reviewDao.save(review);
+        Integer id = reviewDao.save(review);
+        logger.debug(SAVE_REVIEW_WITH_ID, review, id);
+        return id;
     }
 
     /**
      * Find all review, map to DTOs, and get
      */
     public List<ReviewDTO> findAll() {
-        List<Review> review = reviewDao.findAll();
-        return ModelMapper.mapAll(review, ReviewDTO.class);
+        List<Review> reviews = reviewDao.findAll();
+        logger.debug(FIND_ALL_REVIEWS, reviews);
+        return ModelMapper.mapAll(reviews, ReviewDTO.class);
     }
 
     /**
@@ -48,6 +64,7 @@ public class ReviewService {
         ReviewDTO reviewDTO = ReviewDTO.builder().build();
         if (maybeReview.isPresent()) {
             Review review = maybeReview.get();
+            logger.debug(FIND_REVIEW_BY_ID, review, id);
             reviewDTO = ModelMapper.map(review, ReviewDTO.class);
         }
         return Optional.ofNullable(reviewDTO);
@@ -58,8 +75,10 @@ public class ReviewService {
      */
     @Transactional
     public void update(ReviewDTO reviewDTO) {
+        logger.debug(ACCEPTED_TO_UPDATE, reviewDTO);
         Review review = ModelMapper.map(reviewDTO, Review.class);
         reviewDao.update(review);
+        logger.debug(UPDATE_REVIEW, review);
     }
 
     /**
@@ -67,7 +86,9 @@ public class ReviewService {
      */
     @Transactional
     public void delete(ReviewDTO reviewDTO) {
+        logger.debug(ACCEPTED_TO_DELETE, reviewDTO);
         Review review = ModelMapper.map(reviewDTO, Review.class);
         reviewDao.delete(review);
+        logger.debug(DELETE_REVIEW, review);
     }
 }

@@ -4,6 +4,9 @@ import by.tms.gymprogect.database.dao.ExerciseDao;
 import by.tms.gymprogect.database.domain.Train.Exercise;
 import by.tms.gymprogect.database.domain.Train.Exercise_;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.hibernate.Session;
 
 import org.springframework.stereotype.Repository;
@@ -17,6 +20,9 @@ import java.util.Optional;
 
 @Repository
 public class ExerciseDaoImpl extends BaseDAOImpl<Integer, Exercise> implements ExerciseDao {
+
+    private static final String FIND_EXERCISE_BY_NAME = "Find exercise: {} by name: {}";
+    private Logger logger = LogManager.getLogger(ExerciseDaoImpl.class);
 
     /**
      * Find and get an exercise by name
@@ -32,6 +38,8 @@ public class ExerciseDaoImpl extends BaseDAOImpl<Integer, Exercise> implements E
                 .where(
                         cb.equal(root.get(Exercise_.name), name)
                 );
-        return Optional.ofNullable(session.createQuery(criteria).getSingleResult());
+        Optional<Exercise> optionalExercise = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
+        logger.debug(FIND_EXERCISE_BY_NAME, optionalExercise, name);
+        return optionalExercise;
     }
 }
