@@ -45,10 +45,16 @@ public class ModelMapper {
                 .addMapping(User::getTrainingProgram, UserDTO::setTrainingProgramDTO);
     }
 
+    /**
+     *  Create a DTO from an entity, or vice versa
+     */
     public static <D, T> D map(final T entityOrDTO, Class<D> outClass) {
         return MODEL_MAPPER.map(entityOrDTO, outClass);
     }
 
+    /**
+     *  Create DTOs from entities, or vice versa
+     */
     public static <D, T> List<D> mapAll(final Collection<T> fromThis, Class<D> toThis) {
         return fromThis.stream()
                 .map(entityOrDTO -> map(entityOrDTO, toThis))

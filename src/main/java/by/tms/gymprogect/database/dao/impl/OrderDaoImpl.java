@@ -19,6 +19,9 @@ import java.util.List;
 @Repository
 public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDao {
 
+    /**
+     * Find and get orders by season
+     */
     @Override
     public List<Order> findBySeason(Season season) {
         Session session = sessionFactory.getCurrentSession();
@@ -33,6 +36,9 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get orders by purpose
+     */
     @Override
     public List<Order> findByPurpose(Purpose purpose){
         Session session = sessionFactory.getCurrentSession();
@@ -47,6 +53,9 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get orders in which the number of workouts is more than the received value
+     */
     @Override
     public List<Order> findOrdersWhereCountTrainMore(Integer countTrain) {
         Session session = sessionFactory.getCurrentSession();
@@ -61,6 +70,9 @@ public class OrderDaoImpl extends BaseDAOImpl<Integer, Order> implements OrderDa
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get orders in which the number of workouts is less than the received value
+     */
     @Override
     public List<Order> findOrdersWhereCountTrainLess(Integer countTrain) {
         Session session = sessionFactory.getCurrentSession();

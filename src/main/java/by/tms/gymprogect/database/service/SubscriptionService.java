@@ -23,17 +23,26 @@ public class SubscriptionService {
         this.subscriptionDao = subscriptionDao;
     }
 
+    /**
+     * Accept the subscriptionDTO, map to a subscription, save, and return its primary key
+     */
     @Transactional
     public Integer save(SubscriptionDTO subscriptionDTO) {
         Subscription subscription = ModelMapper.map(subscriptionDTO, Subscription.class);
         return subscriptionDao.save(subscription);
     }
 
+    /**
+     * Find all subscriptions, map to DTOs, and get
+     */
     public List<SubscriptionDTO> findAll() {
         List<Subscription> subscriptions = subscriptionDao.findAll();
         return ModelMapper.mapAll(subscriptions, SubscriptionDTO.class);
     }
 
+    /**
+     * Find a subscription by id, map to DTO, and get
+     */
     public Optional<SubscriptionDTO> findById(Integer id) {
         Optional<Subscription> maybeSubscription = subscriptionDao.findById(id);
         SubscriptionDTO subscriptionDTO = SubscriptionDTO.builder().build();
@@ -44,12 +53,18 @@ public class SubscriptionService {
         return Optional.ofNullable(subscriptionDTO);
     }
 
+    /**
+     * Accept the subscriptionDTO, map to a subscription, and update
+     */
     @Transactional
     public void update(SubscriptionDTO subscriptionDTO) {
         Subscription subscription = ModelMapper.map(subscriptionDTO, Subscription.class);
         subscriptionDao.update(subscription);
     }
 
+    /**
+     * Accept the subscriptionDTO, map to a subscription, and delete
+     */
     @Transactional
     public void delete(SubscriptionDTO subscriptionDTO) {
         Subscription subscription = ModelMapper.map(subscriptionDTO, Subscription.class);

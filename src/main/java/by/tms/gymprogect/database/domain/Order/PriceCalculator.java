@@ -8,6 +8,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class PriceCalculator {
 
+    /**
+     * Math and get an orders price by season, considering the discount for regular customers
+     */
     public static int mathPriceBySeason(Season season, User user) {
         int price = -Number.ONE;
         switch (season) {
@@ -18,6 +21,9 @@ public final class PriceCalculator {
         return price - mathSaleForRegularClient(price, user);
     }
 
+    /**
+     * Math and get an orders price by count trains, considering the discount for regular customers
+     */
     public static int mathPriceByCountTrain(int countTrain, User user) {
         int price = countTrain * Number.PRICE_ONE_TRAIN;
         return price - (mathSaleByCountTrain(price) + mathSaleForRegularClient(price, user));

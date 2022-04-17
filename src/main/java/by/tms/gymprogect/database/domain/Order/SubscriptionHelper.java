@@ -12,6 +12,9 @@ import java.util.Objects;
 @UtilityClass
 public class SubscriptionHelper {
 
+    /**
+     * Calculates the number of workouts for a new subscription, taking into account the previous one
+     */
     public static int mathCountRemainingTrain(int countTrain, User user) {
         int result = -1;
         List<Subscription> subscriptions = user.getSubscriptions();
@@ -26,6 +29,9 @@ public class SubscriptionHelper {
         return result;
     }
 
+    /**
+     * Calculates the time of action for a new subscription, taking into account the previous one
+     */
     public static LocalDate mathTimeOfAction(Order order, User user) {
         LocalDate date = LocalDate.now();
         List<Subscription> subscriptions = user.getSubscriptions();

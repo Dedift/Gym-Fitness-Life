@@ -23,6 +23,9 @@ import java.util.Optional;
 @Repository
 public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
 
+    /**
+     * Find and get a user by email
+     */
     @Override
     public Optional<User> findByEmail(String email){
         Session session = sessionFactory.getCurrentSession();
@@ -37,6 +40,9 @@ public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
         return Optional.ofNullable(session.createQuery(criteria).getSingleResult());
     }
 
+    /**
+     * Find and get all users by gender
+     */
     @Override
     public List<User> findByGender(Gender gender) {
         Session session = sessionFactory.getCurrentSession();
@@ -51,6 +57,9 @@ public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all users by role
+     */
     @Override
     public List<User> findByRole(Role role)  {
         Session session = sessionFactory.getCurrentSession();
@@ -65,6 +74,9 @@ public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all users by first name
+     */
     @Override
     public List<User> findByFirstName(String firstName) {
         Session session = sessionFactory.getCurrentSession();
@@ -80,6 +92,9 @@ public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all users by last name
+     */
     @Override
     public List<User> findByLastName(String lastName) {
         Session session = sessionFactory.getCurrentSession();

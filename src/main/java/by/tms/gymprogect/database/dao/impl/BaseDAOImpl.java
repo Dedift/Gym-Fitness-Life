@@ -32,6 +32,9 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
         clazz = (Class<E>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[1];
     }
 
+    /**
+     * Find and get all entities of type E
+     */
     @Override
     public List<E> findAll() {
         Session session = sessionFactory.getCurrentSession();
@@ -41,6 +44,9 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
         return session.createQuery(criteria.select(root)).getResultList();
     }
 
+    /**
+     * Find and get an entity by id
+     */
     @Override
     public Optional<E> findById(PK id) {
         Session session = sessionFactory.getCurrentSession();
@@ -48,6 +54,9 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
         return result;
     }
 
+    /**
+     * Save the entity and return its primary key
+     */
     @Override
     public PK save(E entity) {
         Session session = sessionFactory.getCurrentSession();
@@ -55,12 +64,18 @@ public abstract class BaseDAOImpl<PK extends Serializable, E extends BaseEntity<
         return (PK) id;
     }
 
+    /**
+     * Update the entity
+     */
     @Override
     public void update(E entity) {
         Session session = sessionFactory.getCurrentSession();
         session.update(entity);
     }
 
+    /**
+     * Delete the entity
+     */
     @Override
     public void delete(E entity) {
         Session session = sessionFactory.getCurrentSession();

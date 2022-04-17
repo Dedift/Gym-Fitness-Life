@@ -18,6 +18,9 @@ import java.util.List;
 @Repository
 public class PersonalTrainerDaoImpl extends BaseDAOImpl<Integer, PersonalTrainer> implements PersonalTrainerDao {
 
+    /**
+     * Find and get all personal trainers by first name
+     */
     @Override
     public List<PersonalTrainer> findByFirstName(String firstName){
         Session session = sessionFactory.getCurrentSession();
@@ -32,6 +35,9 @@ public class PersonalTrainerDaoImpl extends BaseDAOImpl<Integer, PersonalTrainer
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all personal trainers by last name
+     */
     @Override
     public List<PersonalTrainer> findByLastName(String lastName){
         Session session = sessionFactory.getCurrentSession();
@@ -46,6 +52,9 @@ public class PersonalTrainerDaoImpl extends BaseDAOImpl<Integer, PersonalTrainer
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all personal trainers by gender
+     */
     @Override
     public List<PersonalTrainer> findByGender(Gender gender) {
         Session session = sessionFactory.getCurrentSession();
@@ -60,6 +69,9 @@ public class PersonalTrainerDaoImpl extends BaseDAOImpl<Integer, PersonalTrainer
         return session.createQuery(criteria).getResultList();
     }
 
+    /**
+     * Find and get all personal trainers whose experience is more than the value received
+     */
     @Override
     public List<PersonalTrainer> findExperienceMore(Integer experience) {
         Session session = sessionFactory.getCurrentSession();

@@ -23,17 +23,26 @@ public class TrainingDayService {
         this.trainingDayDao = trainingDayDao;
     }
 
+    /**
+     * Accept the trainingDayDTO, map to a trainingDay, save, and return its primary key
+     */
     @Transactional
     public Integer save(TrainingDayDTO trainingDayDTO) {
         TrainingDay trainingDay = ModelMapper.map(trainingDayDTO, TrainingDay.class);
         return trainingDayDao.save(trainingDay);
     }
 
+    /**
+     * Find all training days, map to DTOs, and get
+     */
     public List<TrainingDayDTO> findAll() {
         List<TrainingDay> trainingDays = trainingDayDao.findAll();
         return ModelMapper.mapAll(trainingDays, TrainingDayDTO.class);
     }
 
+    /**
+     * Find a training day by id, map to DTO, and get
+     */
     public Optional<TrainingDayDTO> findById(Integer id) {
         Optional<TrainingDay> maybeTrainingDay = trainingDayDao.findById(id);
         TrainingDayDTO trainingDayDTO = TrainingDayDTO.builder().build();
@@ -44,12 +53,18 @@ public class TrainingDayService {
         return Optional.ofNullable(trainingDayDTO);
     }
 
+    /**
+     * Accept the trainingDayDTO, map to a trainingDay, and update
+     */
     @Transactional
     public void update(TrainingDayDTO trainingDayDTO) {
         TrainingDay trainingDay = ModelMapper.map(trainingDayDTO, TrainingDay.class);
         trainingDayDao.update(trainingDay);
     }
 
+    /**
+     * Accept the trainingDayDTO, map to a trainingDay, and delete
+     */
     @Transactional
     public void delete(TrainingDayDTO trainingDayDTO) {
         TrainingDay trainingDay = ModelMapper.map(trainingDayDTO, TrainingDay.class);

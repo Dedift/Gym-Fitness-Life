@@ -18,6 +18,9 @@ import java.util.Optional;
 @Repository
 public class ExerciseDaoImpl extends BaseDAOImpl<Integer, Exercise> implements ExerciseDao {
 
+    /**
+     * Find and get an exercise by name
+     */
     @Override
     public Optional<Exercise> findByName(String name) {
         Session session = sessionFactory.getCurrentSession();
