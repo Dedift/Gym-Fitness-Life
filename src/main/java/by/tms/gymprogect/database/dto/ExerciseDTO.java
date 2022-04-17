@@ -1,7 +1,5 @@
 package by.tms.gymprogect.database.dto;
 
-import by.tms.gymprogect.database.domain.Train.TrainingDay;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +15,9 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-public class ExerciseDTO {
+public class ExerciseDTO extends BaseDTO<Integer> {
 
     private String name;
-    private List<TrainingDay> trainingDays;
+    @ToString.Exclude
+    private List<TrainingDayDTO> trainingDaysDTO;
 }
