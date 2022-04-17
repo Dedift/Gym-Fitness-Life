@@ -16,14 +16,18 @@ public interface Number {
     int TEN = 10;
     int TWELVE = 12;
     int FOURTEEN = 14;
+    int FIFTEEN = 15;
     int TWENTY = 20;
     int TWENTY_FIVE = 25;
     int THIRTY = 30;
     int THIRTY_SIX = 36;
     int FORTY_TWO = 42;
     int PRICE_FOR_MONTH = 70;
+    int ONE_HUNDRED_EIGHTY_SIX = 186;
     int THREE_HUNDRED_SEVENTY_FIVE = 375;
     int PRICE_FOR_SIX_MONTHS = 380;
     int PRICE_FOR_YEAR = 600;
-    int ONE_HUNDRED_EIGHTY_SIX = 186;
+    int TWO_THOUSAND = 2000;
+    int TWO_THOUSAND_TWO = 2002;
+
 }
