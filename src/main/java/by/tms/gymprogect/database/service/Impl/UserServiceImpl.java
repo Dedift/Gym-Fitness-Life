@@ -40,13 +40,6 @@ public class UserServiceImpl implements UserService {
     private static final String ACCEPTED_TO_SAVE = "Accepted to save userDTO: {}";
     private UserDao userDao;
     private Logger logger = LogManager.getLogger(UserService.class);
-    private Function<User, UserDetails> userToUserDetails = user ->
-            org.springframework.security.core.userdetails.User
-                    .builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .authorities(user.getRole().toString())
-                    .build();
 
     @Autowired
     public UserServiceImpl(UserDao userDao) {
@@ -97,10 +90,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> maybeUser = userDao.findByEmail(username);
-        logger.debug(FIND_USER_BY_EMAIL, maybeUser, username);
-        return maybeUser
-                .map(userToUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find user with email: " + username));
+        User user = maybeUser.orElseThrow(() -> new UsernameNotFoundException("Can't find user with email: " + username));
+        logger.debug(FIND_USER_BY_EMAIL, user, username);
+        UserDTO userDTO = ModelMapper.map(user, UserDTO.class);
+        return userDTO;
     }
 
     /**
