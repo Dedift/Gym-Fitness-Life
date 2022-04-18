@@ -1,8 +1,5 @@
 package by.tms.gymprogect.database.dto;
 
-import by.tms.gymprogect.database.domain.Order.Order;
-import by.tms.gymprogect.database.domain.User.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +15,12 @@ import java.time.LocalDate;
 @Setter
 @Builder
 @ToString
-public class SubscriptionDTO {
+public class SubscriptionDTO extends BaseDTO<Integer> {
 
     private LocalDate timeOfAction;
     private int countRemainingTrain;
-    private Order order;
-    private User user;
+    @ToString.Exclude
+    private OrderDTO orderDTO;
+    @ToString.Exclude
+    private UserDTO userDTO;
 }

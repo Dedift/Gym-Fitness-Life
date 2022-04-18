@@ -1,11 +1,6 @@
 package by.tms.gymprogect.database.dto;
 
-import by.tms.gymprogect.database.domain.Order.Order;
-import by.tms.gymprogect.database.domain.Order.Subscription;
-import by.tms.gymprogect.database.domain.Train.PersonalTrainer;
-import by.tms.gymprogect.database.domain.Train.TrainingDay;
 import by.tms.gymprogect.database.domain.User.Gender;
-import by.tms.gymprogect.database.domain.User.Review;
 import by.tms.gymprogect.database.domain.User.Role;
 import by.tms.gymprogect.database.domain.User.UserData;
 
@@ -25,17 +20,17 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-public class UserDTO {
+public class UserDTO extends BaseDTO<Integer> {
 
     private String email;
     private String password;
     private Gender gender;
-    private List<TrainingDay> trainingProgram;
-    private List<Subscription> subscriptions;
+    private List<TrainingDayDTO> trainingProgramDTO;
+    private List<SubscriptionDTO> subscriptionsDTO;
     private LocalDate dateOfBirth;
     private UserData userData;
     private Role role;
-    private PersonalTrainer personalTrainer;
-    private Order order;
-    private Review review;
+    private PersonalTrainerDTO personalTrainerDTO;
+    private List<OrderDTO> ordersDTO;
+    private ReviewDTO reviewDTO;
 }

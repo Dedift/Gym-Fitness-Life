@@ -1,7 +1,5 @@
 package by.tms.gymprogect.database.dto;
 
-import by.tms.gymprogect.database.domain.User.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +13,9 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class ReviewDTO{
+public class ReviewDTO extends BaseDTO<Integer> {
 
     private String text;
-    private User user;
+    @ToString.Exclude
+    private UserDTO userDTO;
 }

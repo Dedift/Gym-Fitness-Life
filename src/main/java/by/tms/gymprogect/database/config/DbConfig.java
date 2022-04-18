@@ -26,6 +26,9 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class DbConfig {
 
+    /**
+     * Create and get a data source
+     */
     @Bean
     public DataSource dataSource(Environment environment){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -36,6 +39,9 @@ public class DbConfig {
         return dataSource;
     }
 
+    /**
+     * Create and get a session factory
+     */
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource, Properties hibernateProperties){
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
@@ -45,6 +51,9 @@ public class DbConfig {
         return sessionFactoryBean;
     }
 
+    /**
+     * Load the configuration for hibernate
+     */
     @Bean
     public Properties hibernateProperties(@Value("classpath:hibernate.properties") Resource resource) throws IOException {
         Properties properties = new Properties();
@@ -52,6 +61,9 @@ public class DbConfig {
         return properties;
     }
 
+    /**
+     * Create the transaction manager
+     */
     @Bean
     public TransactionManager transactionManager(SessionFactory sessionFactory){
         return new HibernateTransactionManager(sessionFactory);

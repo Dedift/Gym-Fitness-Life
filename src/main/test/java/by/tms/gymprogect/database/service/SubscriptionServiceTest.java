@@ -1,17 +1,22 @@
-package by.tms.gymprogect.database.dao.impl;
+package by.tms.gymprogect.database.service;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Order.Order;
 import by.tms.gymprogect.database.domain.Order.Subscription;
-import by.tms.gymprogect.database.util.DatabaseHelper;
 import by.tms.gymprogect.database.domain.Order.Subscription_;
 import by.tms.gymprogect.database.domain.Train.Purpose;
 import by.tms.gymprogect.database.domain.User.Gender;
 import by.tms.gymprogect.database.domain.User.User;
+import by.tms.gymprogect.database.dto.ModelMapper;
+import by.tms.gymprogect.database.dto.OrderDTO;
+import by.tms.gymprogect.database.dto.SubscriptionDTO;
+import by.tms.gymprogect.database.dto.UserDTO;
+import by.tms.gymprogect.database.util.DatabaseHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +38,12 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DbConfigTest.class)
 @Transactional
-class SubscriptionDaoImplTest {
+class SubscriptionServiceTest {
 
     private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
+    private static final String USER_GMAIL_COM = "user@gmail.com";
     @Autowired
-    private SubscriptionDaoImpl subscriptionDao;
+    private SubscriptionService subscriptionService;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
@@ -52,19 +58,19 @@ class SubscriptionDaoImplTest {
 
     @Test
     void save() {
-        Integer id = subscriptionDao.save(Subscription.builder()
-                .order(Order.builder()
+        Integer id = subscriptionService.save(SubscriptionDTO.builder()
+                .orderDTO(OrderDTO.builder()
                         .countTrain(Number.TWELVE)
                         .purpose(Purpose.MUSCLE)
                         .build())
-                .user(User.builder().email(ANY_EMAIL_MAIL_RU).build())
+                .userDTO(UserDTO.builder().email(ANY_EMAIL_MAIL_RU).build())
                 .build());
         Assertions.assertNotNull(id);
     }
 
     @Test
     void findAll() {
-        List<Subscription> subscriptions = subscriptionDao.findAll();
+        List<SubscriptionDTO> subscriptions = subscriptionService.findAll();
         Assertions.assertEquals(Number.THREE, subscriptions.size());
     }
 
@@ -82,43 +88,52 @@ class SubscriptionDaoImplTest {
         Optional<Subscription> maybeSubscriptionByCountTrain = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         Assertions.assertTrue(maybeSubscriptionByCountTrain.isPresent());
         Subscription subscriptionByCountTrain = maybeSubscriptionByCountTrain.get();
-        Optional<Subscription> maybeSubscriptionById = subscriptionDao.findById(subscriptionByCountTrain.getId());
+        Optional<SubscriptionDTO> maybeSubscriptionById = subscriptionService.findById(subscriptionByCountTrain.getId());
         if (maybeSubscriptionById.isPresent()) {
-            Subscription subscriptionById = maybeSubscriptionById.get();
-            Assertions.assertEquals(subscriptionByCountTrain.getOrder(), subscriptionById.getOrder());
+            SubscriptionDTO subscriptionById = maybeSubscriptionById.get();
+            Assertions.assertEquals(subscriptionByCountTrain.getCountRemainingTrain(), subscriptionById.getCountRemainingTrain());
         }
     }
 
     @Test
     void update() {
-        Session session = sessionFactory.getCurrentSession();
-        User anyUser = User.builder().email(ANY_EMAIL_MAIL_RU).gender(Gender.MALE).build();
-        Order anyOrder = Order.builder().countTrain(Number.THIRTY_SIX).purpose(Purpose.MUSCLE).build();
-        Subscription anySubscription = Subscription.builder()
-                .user(anyUser)
-                .order(anyOrder)
+        Session session = sessionFactory.openSession();
+        User user = User.builder().email(ANY_EMAIL_MAIL_RU).gender(Gender.MALE).build();
+        session.save(user);
+        Order order = Order.builder().countTrain(Number.THIRTY_SIX).purpose(Purpose.MUSCLE).build();
+        Subscription subscription = Subscription.builder()
+                .user(user)
+                .order(order)
                 .build();
-        Integer id = (Integer) session.save(anySubscription);
-        anySubscription.setCountRemainingTrain(Number.TWELVE);
-        subscriptionDao.update(anySubscription);
-        Optional<Subscription> maybeSubscription = Optional.ofNullable(session.find(Subscription.class, id));
+        Integer id = (Integer) session.save(subscription);
+        session.close();
+        subscription.setCountRemainingTrain(Number.TWELVE);
+        SubscriptionDTO subscriptionDTO = ModelMapper.map(subscription, SubscriptionDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        Transaction transaction = currentSession.getTransaction();
+        subscriptionService.update(subscriptionDTO);
+        transaction.commit();
+        Optional<Subscription> maybeSubscription = Optional.ofNullable(currentSession.find(Subscription.class, id));
         Assertions.assertTrue(maybeSubscription.isPresent());
-        Subscription updatedSubscription = maybeSubscription.get();
-        Assertions.assertEquals(updatedSubscription.getCountRemainingTrain(), anySubscription.getCountRemainingTrain());
+        Subscription updateSubscription = maybeSubscription.get();
+        Assertions.assertEquals(updateSubscription.getCountRemainingTrain(), subscription.getCountRemainingTrain());
     }
 
     @Test
     void delete() {
-        Session session = sessionFactory.getCurrentSession();
-        User anyUser = User.builder().email(ANY_EMAIL_MAIL_RU).gender(Gender.MALE).build();
-        Order anyOrder = Order.builder().countTrain(Number.THIRTY_SIX).purpose(Purpose.MUSCLE).build();
-        Subscription anySubscription = Subscription.builder()
-                .user(anyUser)
-                .order(anyOrder)
+        User user = User.builder().email(USER_GMAIL_COM).gender(Gender.MALE).build();
+        Order order = Order.builder().countTrain(Number.THIRTY_SIX).purpose(Purpose.MUSCLE).build();
+        Subscription subscription = Subscription.builder()
+                .user(user)
+                .order(order)
                 .build();
-        Integer id = (Integer) session.save(anySubscription);
-        subscriptionDao.delete(anySubscription);
-        Optional<Subscription> maybeSubscription = Optional.ofNullable(session.find(Subscription.class, id));
+        Session session = sessionFactory.openSession();
+        Integer id = (Integer) session.save(user);
+        session.close();
+        SubscriptionDTO subscriptionDTO = ModelMapper.map(subscription, SubscriptionDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        subscriptionService.delete(subscriptionDTO);
+        Optional<Subscription> maybeSubscription = Optional.ofNullable(currentSession.find(Subscription.class, id));
         Assertions.assertFalse(maybeSubscription.isPresent());
     }
 }

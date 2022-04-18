@@ -1,5 +1,6 @@
 package by.tms.gymprogect.database.util;
 
+import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Order.Order;
 import by.tms.gymprogect.database.domain.Order.Season;
 import by.tms.gymprogect.database.domain.Order.Subscription;
@@ -24,12 +25,34 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.time.LocalDate;
-
 import java.util.List;
 
 @Component
 public class DatabaseHelper {
 
+    private static final String SVETAS_MAIL = "Popova@gmail.com";
+    private static final String SVETAS_BANK_CARD = "234214324";
+    private static final String SVETA = "Sveta";
+    private static final String POPOVA = "Popova";
+    private static final String PASSWORD = "pass";
+    private static final String SVETAS_PHONE_NUMBER = "+375294432576";
+    private static final String SVETAS_REVIEW = "I'm very happy";
+    private static final String PAVELS_MAIL = "Pavel@mail.ru";
+    private static final String PAVELS_BANK_CARD = "87396729";
+    private static final String PAVEL = "Pavel";
+    private static final String LETOV = "Letov";
+    private static final String PAVELS_PHONE_NUMBER = "+375448975632";
+    private static final String PAVELS_REVIEW = "This is the best gym!";
+    private static final String NIKITAS_MAIL = "nikitaKlimovich@mail.ru";
+    private static final String NIKITAS_BANK_CARD = "87396729";
+    private static final String NIKITA = "Nikita";
+    private static final String KLIMOVICH = "Klimovich";
+    private static final String NIKITAS_PHONE_NUMBER = "+375259963298";
+    private static final String NIKITAS_REVIEW = "This gym is wonderful!";
+    private static final String OLGA = "Olga";
+    private static final String NOVIKOVA = "Novikova";
+    private static final String OLEG = "Oleg";
+    private static final String PRISTAVKO = "Pristavko";
 
     public void cleanDatabase(Session session) {
         session.createQuery("delete from Exercise ").executeUpdate();
@@ -43,34 +66,21 @@ public class DatabaseHelper {
 
     public void prepareData(Session session) {
         prepareExercises(session);
-        PersonalTrainer olgaNovikova = PersonalTrainer.builder()
-                .firstName("Olga")
-                .lastName("Novikova")
-                .experience(4)
-                .gender(Gender.FEMALE)
-                .build();
-        PersonalTrainer olegPristavko = PersonalTrainer.builder()
-                .firstName("Oleg")
-                .lastName("Pristavko")
-                .experience(2)
-                .gender(Gender.MALE)
-                .build();
         User svetaPopova = User.builder()
-                .email("Popova@gmail.com")
-                .password("pass")
+                .email(SVETAS_MAIL)
+                .password(PASSWORD)
                 .gender(Gender.FEMALE)
-                .dateOfBirth(LocalDate.of(2000, 4, 12))
+                .dateOfBirth(LocalDate.of(Number.TWO_THOUSAND, Number.FOUR, Number.TWELVE))
                 .userData(UserData.builder()
-                        .bankCard("234214324")
-                        .firstName("Sveta")
-                        .lastName("Popova")
-                        .phoneNumber("+375294432576")
+                        .bankCard(SVETAS_BANK_CARD)
+                        .firstName(SVETA)
+                        .lastName(POPOVA)
+                        .phoneNumber(SVETAS_PHONE_NUMBER)
                         .build())
                 .role(Role.USER)
                 .review(Review.builder()
-                        .text("I'm very happy")
+                        .text(SVETAS_REVIEW)
                         .build())
-                .personalTrainer(olgaNovikova)
                 .build();
         Order svetasOrder = Order.builder()
                 .season(Season.SIX_MONTHS)
@@ -88,44 +98,43 @@ public class DatabaseHelper {
                                 findExerciseByName(ExercisesName.SHRUGS, session),
                                 findExerciseByName(ExercisesName.CHEST_PRESS_MACHINE, session),
                                 findExerciseByName(ExercisesName.BACK_EXTENSION, session)))
-                        .countSetsPerExercise(3)
-                        .countRepetitionsPerSet(12)
+                        .countSetsPerExercise(Number.THREE)
+                        .countRepetitionsPerSet(Number.TWELVE)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.BACK_SQUAT, session),
                                 findExerciseByName(ExercisesName.CABLE_PUSH_DOWN, session),
                                 findExerciseByName(ExercisesName.REVERSE_CRUNCH, session)))
-                        .countSetsPerExercise(3)
-                        .countRepetitionsPerSet(12)
+                        .countSetsPerExercise(Number.THREE)
+                        .countRepetitionsPerSet(Number.TWELVE)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.BOX_JUMPS, session),
                                 findExerciseByName(ExercisesName.CLOSE_GRIP_BENCH_PRESS, session),
                                 findExerciseByName(ExercisesName.BICYCLE_CRUNCH_SITTING, session)))
-                        .countSetsPerExercise(3)
-                        .countRepetitionsPerSet(12)
+                        .countSetsPerExercise(Number.THREE)
+                        .countRepetitionsPerSet(Number.TWELVE)
                         .build()));
         User pavelLetov = User.builder()
-                .email("Pavel@mail.ru")
-                .password("pass")
+                .email(PAVELS_MAIL)
+                .password(PASSWORD)
                 .gender(Gender.MALE)
-                .dateOfBirth(LocalDate.of(2002, 7, 28))
+                .dateOfBirth(LocalDate.of(Number.TWO_THOUSAND_TWO, Number.SIX, Number.THREE))
                 .userData(UserData.builder()
-                        .bankCard("87396729")
-                        .firstName("Pavel")
-                        .lastName("Letov")
-                        .phoneNumber("+375448975632")
+                        .bankCard(PAVELS_BANK_CARD)
+                        .firstName(PAVEL)
+                        .lastName(LETOV)
+                        .phoneNumber(PAVELS_PHONE_NUMBER)
                         .build())
                 .role(Role.USER)
                 .review(Review.builder()
-                        .text("This is the best gym!")
+                        .text(PAVELS_REVIEW)
                         .build())
-                .personalTrainer(olgaNovikova)
                 .build();
         Order pavelsOrder = Order.builder()
-                .countTrain(36)
+                .countTrain(Number.THIRTY_SIX)
                 .purpose(Purpose.FAT_BURNING)
                 .user(pavelLetov)
                 .build();
@@ -140,51 +149,50 @@ public class DatabaseHelper {
                                 findExerciseByName(ExercisesName.LOW_CABLE_CROSSOVER, session),
                                 findExerciseByName(ExercisesName.HAMMER_CURL, session),
                                 findExerciseByName(ExercisesName.SKATERS, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(20)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.TWENTY)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.LIFTING_DUMBBELLS_IN_FRONT_OF_YOU, session),
                                 findExerciseByName(ExercisesName.CABLE_PUSH_DOWN, session),
                                 findExerciseByName(ExercisesName.REVERSE_CRUNCH, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(20)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.TWENTY)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.BOX_JUMPS, session),
                                 findExerciseByName(ExercisesName.CLOSE_GRIP_BENCH_PRESS, session),
                                 findExerciseByName(ExercisesName.BICYCLE_CRUNCH_SITTING, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(20)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.TWENTY)
                         .build()));
         User nikitaKlimovich = User.builder()
-                .email("nikitaKlimovich@mail.ru")
-                .password("pass")
+                .email(NIKITAS_MAIL)
+                .password(PASSWORD)
                 .gender(Gender.MALE)
-                .dateOfBirth(LocalDate.of(1992, 4, 8))
+                .dateOfBirth(LocalDate.of(Number.TWO_THOUSAND, Number.FOUR, Number.EIGHT))
                 .userData(UserData.builder()
-                        .bankCard("87396729")
-                        .firstName("Nikita")
-                        .lastName("Klimovich")
-                        .phoneNumber("+375259963298")
+                        .bankCard(NIKITAS_BANK_CARD)
+                        .firstName(NIKITA)
+                        .lastName(KLIMOVICH)
+                        .phoneNumber(NIKITAS_PHONE_NUMBER)
                         .build())
                 .role(Role.USER)
                 .review(Review.builder()
-                        .text("This gym is wonderful!")
+                        .text(NIKITAS_REVIEW)
                         .build())
-                .personalTrainer(olegPristavko)
                 .build();
         Order niksOrder = Order.builder()
-                .countTrain(12)
+                .countTrain(Number.TWELVE)
                 .purpose(Purpose.MUSCLE)
                 .user(nikitaKlimovich)
                 .build();
         nikitaKlimovich.getOrders().add(niksOrder);
         nikitaKlimovich.getSubscriptions().add(Subscription.builder()
-                        .user(nikitaKlimovich)
-                        .order(niksOrder)
+                .user(nikitaKlimovich)
+                .order(niksOrder)
                 .build());
         nikitaKlimovich.setTrainingProgram(List.of(
                 TrainingDay.builder()
@@ -192,29 +200,41 @@ public class DatabaseHelper {
                                 findExerciseByName(ExercisesName.LOW_CABLE_CROSSOVER, session),
                                 findExerciseByName(ExercisesName.HAMMER_CURL, session),
                                 findExerciseByName(ExercisesName.SKATERS, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(15)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.FIFTEEN)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.LIFTING_DUMBBELLS_IN_FRONT_OF_YOU, session),
                                 findExerciseByName(ExercisesName.CABLE_PUSH_DOWN, session),
                                 findExerciseByName(ExercisesName.REVERSE_CRUNCH, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(15)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.FIFTEEN)
                         .build(),
                 TrainingDay.builder()
                         .exercises(List.of(
                                 findExerciseByName(ExercisesName.BOX_JUMPS, session),
                                 findExerciseByName(ExercisesName.CLOSE_GRIP_BENCH_PRESS, session),
                                 findExerciseByName(ExercisesName.BICYCLE_CRUNCH_SITTING, session)))
-                        .countSetsPerExercise(4)
-                        .countRepetitionsPerSet(25)
+                        .countSetsPerExercise(Number.FOUR)
+                        .countRepetitionsPerSet(Number.NINE)
                         .build()));
+        PersonalTrainer olgaNovikova = PersonalTrainer.builder()
+                .firstName(OLGA)
+                .lastName(NOVIKOVA)
+                .experience(Number.FOUR)
+                .gender(Gender.FEMALE)
+                .build();
         olgaNovikova.getWards().add(svetaPopova);
         olgaNovikova.getWards().add(pavelLetov);
-        olegPristavko.getWards().add(nikitaKlimovich);
         session.save(olgaNovikova);
+        PersonalTrainer olegPristavko = PersonalTrainer.builder()
+                .firstName(OLEG)
+                .lastName(PRISTAVKO)
+                .experience(Number.TWO)
+                .gender(Gender.MALE)
+                .build();
+        olegPristavko.getWards().add(nikitaKlimovich);
         session.save(olegPristavko);
     }
 

@@ -1,13 +1,16 @@
-package by.tms.gymprogect.database.dao.impl;
+package by.tms.gymprogect.database.service;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.User.Review;
-import by.tms.gymprogect.database.util.DatabaseHelper;
 import by.tms.gymprogect.database.domain.User.Review_;
+import by.tms.gymprogect.database.dto.ModelMapper;
+import by.tms.gymprogect.database.dto.ReviewDTO;
+import by.tms.gymprogect.database.util.DatabaseHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,19 +25,18 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
 import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DbConfigTest.class)
 @Transactional
-class ReviewDaoImplTest {
+class ReviewServiceTest {
 
     private static final String I_LIKE_THIS_GYM = "I like this gym!";
     private static final String THIS_GYM_IS_WONDERFUL = "This gym is wonderful!";
     @Autowired
-    private ReviewDaoImpl reviewDao;
+    private ReviewService reviewService;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
@@ -49,7 +51,7 @@ class ReviewDaoImplTest {
 
     @Test
     void save() {
-        Integer id = reviewDao.save(Review.builder()
+        Integer id = reviewService.save(ReviewDTO.builder()
                 .text(I_LIKE_THIS_GYM)
                 .build());
         Assertions.assertNotNull(id);
@@ -57,7 +59,7 @@ class ReviewDaoImplTest {
 
     @Test
     void findAll() {
-        List<Review> reviews = reviewDao.findAll();
+        List<ReviewDTO> reviews = reviewService.findAll();
         Assertions.assertEquals(Number.THREE, reviews.size());
     }
 
@@ -75,37 +77,46 @@ class ReviewDaoImplTest {
         Optional<Review> maybeReviewByName = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         Assertions.assertTrue(maybeReviewByName.isPresent());
         Review reviewByText = maybeReviewByName.get();
-        Optional<Review> maybeReviewById = reviewDao.findById(reviewByText.getId());
+        Optional<ReviewDTO> maybeReviewById = reviewService.findById(reviewByText.getId());
         if (maybeReviewById.isPresent()) {
-            Review reviewById = maybeReviewById.get();
+            ReviewDTO reviewById = maybeReviewById.get();
             Assertions.assertEquals(reviewByText.getText(), reviewById.getText());
         }
     }
 
+
     @Test
     void update() {
-        Session session = sessionFactory.getCurrentSession();
-        Review anyReview = Review.builder()
+        Review review = Review.builder()
                 .text(THIS_GYM_IS_WONDERFUL)
                 .build();
-        Integer id = (Integer) session.save(anyReview);
-        anyReview.setText(I_LIKE_THIS_GYM);
-        reviewDao.update(anyReview);
-        Optional<Review> maybeReview = Optional.ofNullable(session.find(Review.class, id));
+        Session session = sessionFactory.openSession();
+        Integer id = (Integer) session.save(review);
+        session.close();
+        review.setText(I_LIKE_THIS_GYM);
+        ReviewDTO reviewDTO = ModelMapper.map(review, ReviewDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        Transaction transaction = currentSession.getTransaction();
+        reviewService.update(reviewDTO);
+        transaction.commit();
+        Optional<Review> maybeReview = Optional.ofNullable(currentSession.find(Review.class, id));
         Assertions.assertTrue(maybeReview.isPresent());
-        Review updatedReview = maybeReview.get();
-        Assertions.assertEquals(updatedReview.getText(), anyReview.getText());
+        Review updateReview = maybeReview.get();
+        Assertions.assertEquals(updateReview.getText(), review.getText());
     }
 
     @Test
     void delete() {
-        Session session = sessionFactory.getCurrentSession();
-        Review anyReview = Review.builder()
+        Review review = Review.builder()
                 .text(THIS_GYM_IS_WONDERFUL)
                 .build();
-        Integer id = (Integer) session.save(anyReview);
-        reviewDao.delete(anyReview);
-        Optional<Review> maybeReview = Optional.ofNullable(session.find(Review.class, id));
+        Session session = sessionFactory.openSession();
+        Integer id = (Integer) session.save(review);
+        session.close();
+        ReviewDTO reviewDTO = ModelMapper.map(review, ReviewDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        reviewService.delete(reviewDTO);
+        Optional<Review> maybeReview = Optional.ofNullable(currentSession.find(Review.class, id));
         Assertions.assertFalse(maybeReview.isPresent());
     }
 }
