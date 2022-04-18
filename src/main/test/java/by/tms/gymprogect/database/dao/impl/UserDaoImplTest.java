@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.UserDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.User.Gender;
 import by.tms.gymprogect.database.domain.User.Role;
@@ -42,7 +43,7 @@ class UserDaoImplTest {
     private static final String PAVEL = "Pavel";
     private static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

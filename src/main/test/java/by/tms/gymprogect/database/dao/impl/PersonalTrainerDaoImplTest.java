@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.PersonalTrainerDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Train.PersonalTrainer;
 import by.tms.gymprogect.database.util.DatabaseHelper;
@@ -37,7 +38,7 @@ class PersonalTrainerDaoImplTest {
     private static final String OLGA = "Olga";
     private static final String NOVIKOVA = "Novikova";
     @Autowired
-    private PersonalTrainerDaoImpl personalTrainerDao;
+    private PersonalTrainerDao personalTrainerDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

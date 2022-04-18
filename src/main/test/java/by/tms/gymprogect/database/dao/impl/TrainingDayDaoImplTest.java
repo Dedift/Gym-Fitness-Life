@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.TrainingDayDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Train.TrainingDay;
 import by.tms.gymprogect.database.util.DatabaseHelper;
@@ -34,7 +35,7 @@ class TrainingDayDaoImplTest {
 
     private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
     @Autowired
-    private TrainingDayDaoImpl trainingDayDao;
+    private TrainingDayDao trainingDayDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.OrderDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Order.Order;
 import by.tms.gymprogect.database.util.DatabaseHelper;
@@ -34,7 +35,7 @@ import java.util.Optional;
 class OrderDaoImplTest {
 
     @Autowired
-    private OrderDaoImpl orderDao;
+    private OrderDao orderDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

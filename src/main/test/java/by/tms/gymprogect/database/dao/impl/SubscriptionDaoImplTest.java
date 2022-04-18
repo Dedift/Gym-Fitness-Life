@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.SubscriptionDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Order.Order;
 import by.tms.gymprogect.database.domain.Order.Subscription;
@@ -37,7 +38,7 @@ class SubscriptionDaoImplTest {
 
     private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
     @Autowired
-    private SubscriptionDaoImpl subscriptionDao;
+    private SubscriptionDao subscriptionDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

@@ -1,5 +1,6 @@
 package by.tms.gymprogect.database.dao.impl;
 
+import by.tms.gymprogect.database.dao.ExerciseDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Train.Exercise;
 import by.tms.gymprogect.database.domain.Train.Exercise_;
@@ -35,7 +36,7 @@ class ExerciseDaoImplTest {
     private static final String ANY_EXERCISE = "anyExercise";
     private static final String NEW_EXERCISE = "newExercise";
     @Autowired
-    private ExerciseDaoImpl exerciseDao;
+    private ExerciseDao exerciseDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired

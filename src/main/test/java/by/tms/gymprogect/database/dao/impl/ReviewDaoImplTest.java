@@ -1,6 +1,7 @@
 package by.tms.gymprogect.database.dao.impl;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
+import by.tms.gymprogect.database.dao.ReviewDao;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.User.Review;
 import by.tms.gymprogect.database.util.DatabaseHelper;
@@ -34,7 +35,7 @@ class ReviewDaoImplTest {
     private static final String I_LIKE_THIS_GYM = "I like this gym!";
     private static final String THIS_GYM_IS_WONDERFUL = "This gym is wonderful!";
     @Autowired
-    private ReviewDaoImpl reviewDao;
+    private ReviewDao reviewDao;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
