@@ -1,14 +1,18 @@
-package by.tms.gymprogect.database.dao.impl;
+package by.tms.gymprogect.database.service;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Train.TrainingDay;
-import by.tms.gymprogect.database.util.DatabaseHelper;
 import by.tms.gymprogect.database.domain.Train.TrainingDay_;
 import by.tms.gymprogect.database.domain.User.User;
+import by.tms.gymprogect.database.dto.ModelMapper;
+import by.tms.gymprogect.database.dto.TrainingDayDTO;
+import by.tms.gymprogect.database.dto.UserDTO;
+import by.tms.gymprogect.database.util.DatabaseHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +34,12 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DbConfigTest.class)
 @Transactional
-class TrainingDayDaoImplTest {
+class TrainingDayServiceTest {
 
+    private static final String USER_GMAIL_COM = "user@gmail.com";
     private static final String ANY_EMAIL_MAIL_RU = "anyemail@mail.ru";
     @Autowired
-    private TrainingDayDaoImpl trainingDayDao;
+    private TrainingDayService trainingDayService;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
@@ -49,8 +54,8 @@ class TrainingDayDaoImplTest {
 
     @Test
     void save() {
-        Integer id = trainingDayDao.save(TrainingDay.builder()
-                .user(User.builder().email(ANY_EMAIL_MAIL_RU).build())
+        Integer id = trainingDayService.save(TrainingDayDTO.builder()
+                .userDTO(UserDTO.builder().email(ANY_EMAIL_MAIL_RU).build())
                 .countSetsPerExercise(Number.FOUR)
                 .countRepetitionsPerSet(Number.TWENTY)
                 .build());
@@ -59,7 +64,7 @@ class TrainingDayDaoImplTest {
 
     @Test
     void findAll() {
-        List<TrainingDay> trainingDays = trainingDayDao.findAll();
+        List<TrainingDayDTO> trainingDays = trainingDayService.findAll();
         Assertions.assertEquals(Number.NINE, trainingDays.size());
     }
 
@@ -78,41 +83,53 @@ class TrainingDayDaoImplTest {
                 Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         Assertions.assertTrue(maybeTrainingDayByCountRepetitionsPerSet.isPresent());
         TrainingDay trainingDayByCountRepetitionsPerSet = maybeTrainingDayByCountRepetitionsPerSet.get();
-        Optional<TrainingDay> maybeTrainingDayById = trainingDayDao.findById(trainingDayByCountRepetitionsPerSet.getId());
+        Optional<TrainingDayDTO> maybeTrainingDayById = trainingDayService.findById(trainingDayByCountRepetitionsPerSet.getId());
         if (maybeTrainingDayById.isPresent()) {
-            TrainingDay trainingDayById = maybeTrainingDayById.get();
-            Assertions.assertEquals(trainingDayByCountRepetitionsPerSet.getExercises(), trainingDayById.getExercises());
+            TrainingDayDTO trainingDayDTO = maybeTrainingDayById.get();
+            Assertions.assertEquals(trainingDayByCountRepetitionsPerSet.getCountSetsPerExercise(), trainingDayDTO.getCountSetsPerExercise());
         }
     }
 
     @Test
     void update() {
-        Session session = sessionFactory.getCurrentSession();
-        TrainingDay anyTrainingDay = TrainingDay.builder()
-                .user(User.builder().email(ANY_EMAIL_MAIL_RU).build())
+        Session session = sessionFactory.openSession();
+        User user = User.builder().email(ANY_EMAIL_MAIL_RU).build();
+        session.save(user);
+        TrainingDay trainingDay = TrainingDay.builder()
+                .user(user)
                 .countSetsPerExercise(Number.FOUR)
                 .countRepetitionsPerSet(Number.TWENTY)
                 .build();
-        Integer id = (Integer) session.save(anyTrainingDay);
-        anyTrainingDay.setCountSetsPerExercise(Number.SIX);
-        trainingDayDao.update(anyTrainingDay);
-        Optional<TrainingDay> maybeTrainingDay = Optional.ofNullable(session.find(TrainingDay.class, id));
+        Integer id = (Integer) session.save(trainingDay);
+        session.close();
+        trainingDay.setCountSetsPerExercise(Number.SIX);
+        TrainingDayDTO trainingDayDTO = ModelMapper.map(trainingDay, TrainingDayDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        Transaction transaction = currentSession.getTransaction();
+        trainingDayService.update(trainingDayDTO);
+        transaction.commit();
+        Optional<TrainingDay> maybeTrainingDay = Optional.ofNullable(currentSession.find(TrainingDay.class, id));
         Assertions.assertTrue(maybeTrainingDay.isPresent());
-        TrainingDay updatedTrainingDay = maybeTrainingDay.get();
-        Assertions.assertEquals(updatedTrainingDay.getCountSetsPerExercise(), anyTrainingDay.getCountSetsPerExercise());
+        TrainingDay updateTrainingDay = maybeTrainingDay.get();
+        Assertions.assertEquals(updateTrainingDay.getCountSetsPerExercise(), trainingDay.getCountSetsPerExercise());
     }
 
     @Test
     void delete() {
-        Session session = sessionFactory.getCurrentSession();
-        TrainingDay anyTrainingDay = TrainingDay.builder()
-                .user(User.builder().email(ANY_EMAIL_MAIL_RU).build())
+        Session session = sessionFactory.openSession();
+        User user = User.builder().email(USER_GMAIL_COM).build();
+        session.save(user);
+        TrainingDay trainingDay = TrainingDay.builder()
+                .user(user)
                 .countSetsPerExercise(Number.FOUR)
                 .countRepetitionsPerSet(Number.TWENTY)
                 .build();
-        Integer id = (Integer) session.save(anyTrainingDay);
-        trainingDayDao.delete(anyTrainingDay);
-        Optional<TrainingDay> maybeTrainingDay = Optional.ofNullable(session.find(TrainingDay.class, id));
+        Integer id = (Integer) session.save(trainingDay);
+        session.close();
+        TrainingDayDTO trainingDayDTO = ModelMapper.map(trainingDay, TrainingDayDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        trainingDayService.delete(trainingDayDTO);
+        Optional<TrainingDay> maybeTrainingDay = Optional.ofNullable(currentSession.find(TrainingDay.class, id));
         Assertions.assertFalse(maybeTrainingDay.isPresent());
     }
 }

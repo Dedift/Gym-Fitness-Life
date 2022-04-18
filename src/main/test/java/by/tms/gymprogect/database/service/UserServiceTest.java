@@ -1,21 +1,22 @@
-package by.tms.gymprogect.database.dao.impl;
+package by.tms.gymprogect.database.service;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.User.Gender;
 import by.tms.gymprogect.database.domain.User.Role;
 import by.tms.gymprogect.database.domain.User.User;
-import by.tms.gymprogect.database.util.DatabaseHelper;
 import by.tms.gymprogect.database.domain.User.User_;
+import by.tms.gymprogect.database.dto.ModelMapper;
+import by.tms.gymprogect.database.dto.UserDTO;
+import by.tms.gymprogect.database.util.DatabaseHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import org.hibernate.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,23 +27,22 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.io.Serializable;
-
 import java.util.List;
 import java.util.Optional;
-
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DbConfigTest.class)
 @Transactional
-class UserDaoImplTest {
+class UserServiceTest {
 
     private static final String POPOVA_GMAIL_COM = "Popova@gmail.com";
     private static final String NEW_EMAIL_GMAIL_COM = "newemail@gmail.com";
     private static final String POPOVA = "Popova";
     private static final String PAVEL = "Pavel";
     private static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
+    private static final String USER_GMAIL_COM = "user@gmail.com";
     @Autowired
-    private UserDaoImpl userDao;
+    private UserService userService;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
@@ -57,13 +57,13 @@ class UserDaoImplTest {
 
     @Test
     void save() {
-        Serializable id = userDao.save(User.builder().email(NEW_EMAIL_GMAIL_COM).build());
+        Serializable id = userService.save(UserDTO.builder().email(NEW_EMAIL_GMAIL_COM).build());
         Assertions.assertNotNull(id);
     }
 
     @Test
     void findAll() {
-        List<User> users = userDao.findAll();
+        List<UserDTO> users = userService.findAll();
         Assertions.assertEquals(Number.THREE, users.size());
     }
 
@@ -81,52 +81,57 @@ class UserDaoImplTest {
         Optional<User> maybeUserByEmail = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         Assertions.assertTrue(maybeUserByEmail.isPresent());
         User userByEmail = maybeUserByEmail.get();
-        Optional<User> maybeUserById = userDao.findById(userByEmail.getId());
+        Optional<UserDTO> maybeUserById = userService.findById(userByEmail.getId());
         if (maybeUserById.isPresent()) {
-            User userById = maybeUserById.get();
+            UserDTO userById = maybeUserById.get();
             Assertions.assertEquals(userByEmail.getEmail(), userById.getEmail());
         }
     }
 
     @Test
     void findByEmail() {
-        Optional<User> maybeUser = userDao.findByEmail(POPOVA_GMAIL_COM);
+        Optional<UserDTO> maybeUser = userService.findByEmail(POPOVA_GMAIL_COM);
         Assertions.assertTrue(maybeUser.isPresent());
         maybeUser.ifPresent(user -> Assertions.assertEquals(POPOVA, user.getUserData().getLastName()));
     }
 
     @Test
     void findByGender() {
-        List<User> users = userDao.findByGender(Gender.FEMALE);
+        List<UserDTO> users = userService.findByGender(Gender.FEMALE);
         Assertions.assertEquals(Number.ONE, users.size());
     }
 
     @Test
     void findByRole() {
-        List<User> users = userDao.findByRole(Role.USER);
+        List<UserDTO> users = userService.findByRole(Role.USER);
         Assertions.assertEquals(Number.THREE, users.size());
     }
 
     @Test
     void findByFirstName() {
-        List<User> users = userDao.findByFirstName(PAVEL);
+        List<UserDTO> users = userService.findByFirstName(PAVEL);
         Assertions.assertEquals(Number.ONE, users.size());
     }
 
     @Test
     void findByLastName() {
-        List<User> users = userDao.findByLastName(POPOVA);
+        List<UserDTO> users = userService.findByLastName(POPOVA);
         Assertions.assertEquals(Number.ONE, users.size());
     }
 
     @Test
     void update() {
-        Session session = sessionFactory.getCurrentSession();
         User user = User.builder().email(ANY_EMAIL_GMAIL_COM).build();
+        Session session = sessionFactory.openSession();
         Integer id = (Integer) session.save(user);
+        session.close();
         user.setEmail(NEW_EMAIL_GMAIL_COM);
-        userDao.update(user);
-        Optional<User> optionalUser = Optional.ofNullable(session.find(User.class, id));
+        UserDTO userDTO = ModelMapper.map(user, UserDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        Transaction transaction = currentSession.getTransaction();
+        userService.update(userDTO);
+        transaction.commit();
+        Optional<User> optionalUser = Optional.ofNullable(currentSession.find(User.class, id));
         Assertions.assertTrue(optionalUser.isPresent());
         User updateUser = optionalUser.get();
         Assertions.assertEquals(updateUser.getEmail(), user.getEmail());
@@ -134,11 +139,14 @@ class UserDaoImplTest {
 
     @Test
     void delete() {
-        Session session = sessionFactory.getCurrentSession();
-        User user = User.builder().email(NEW_EMAIL_GMAIL_COM).build();
+        User user = User.builder().email(USER_GMAIL_COM).build();
+        Session session = sessionFactory.openSession();
         Integer id = (Integer) session.save(user);
-        userDao.delete(user);
-        Optional<User> optionalUser = Optional.ofNullable(session.find(User.class, id));
+        session.close();
+        UserDTO userDTO = ModelMapper.map(user, UserDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        userService.delete(userDTO);
+        Optional<User> optionalUser = Optional.ofNullable(currentSession.find(User.class, id));
         Assertions.assertFalse(optionalUser.isPresent());
     }
 }

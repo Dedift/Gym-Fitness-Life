@@ -1,14 +1,17 @@
-package by.tms.gymprogect.database.dao.impl;
+package by.tms.gymprogect.database.service;
 
 import by.tms.gymprogect.database.config.DbConfigTest;
 import by.tms.gymprogect.database.domain.Number;
 import by.tms.gymprogect.database.domain.Train.PersonalTrainer;
-import by.tms.gymprogect.database.util.DatabaseHelper;
 import by.tms.gymprogect.database.domain.Train.PersonalTrainer_;
 import by.tms.gymprogect.database.domain.User.Gender;
+import by.tms.gymprogect.database.dto.ModelMapper;
+import by.tms.gymprogect.database.dto.PersonalTrainerDTO;
+import by.tms.gymprogect.database.util.DatabaseHelper;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,14 +33,14 @@ import java.util.Optional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DbConfigTest.class)
 @Transactional
-class PersonalTrainerDaoImplTest {
+class PersonalTrainerServiceTest {
 
     private static final String VITALIY = "Vitaliy";
     private static final String ZYEV = "Zyev";
     private static final String OLGA = "Olga";
     private static final String NOVIKOVA = "Novikova";
     @Autowired
-    private PersonalTrainerDaoImpl personalTrainerDao;
+    private PersonalTrainerService personalTrainerService;
     @Autowired
     private DatabaseHelper databaseHelper;
     @Autowired
@@ -52,7 +55,7 @@ class PersonalTrainerDaoImplTest {
 
     @Test
     void save() {
-        Integer id = personalTrainerDao.save(PersonalTrainer.builder()
+        Integer id = personalTrainerService.save(PersonalTrainerDTO.builder()
                 .firstName(VITALIY)
                 .lastName(ZYEV)
                 .experience(Number.TWO)
@@ -63,7 +66,7 @@ class PersonalTrainerDaoImplTest {
 
     @Test
     void findAll() {
-        List<PersonalTrainer> personalTrainers = personalTrainerDao.findAll();
+        List<PersonalTrainerDTO> personalTrainers = personalTrainerService.findAll();
         Assertions.assertEquals(Number.TWO, personalTrainers.size());
     }
 
@@ -81,68 +84,76 @@ class PersonalTrainerDaoImplTest {
         Optional<PersonalTrainer> maybePersonalTrainerByName = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
         Assertions.assertTrue(maybePersonalTrainerByName.isPresent());
         PersonalTrainer personalTrainerByName = maybePersonalTrainerByName.get();
-        Optional<PersonalTrainer> maybePersonalTrainerById = personalTrainerDao.findById(personalTrainerByName.getId());
+        Optional<PersonalTrainerDTO> maybePersonalTrainerById = personalTrainerService.findById(personalTrainerByName.getId());
         if (maybePersonalTrainerById.isPresent()) {
-            PersonalTrainer personalTrainerById = maybePersonalTrainerById.get();
+            PersonalTrainerDTO personalTrainerById = maybePersonalTrainerById.get();
             Assertions.assertEquals(personalTrainerByName.getLastName(), personalTrainerById.getLastName());
         }
     }
 
     @Test
     void findByFirstName() {
-        List<PersonalTrainer> personalTrainers = personalTrainerDao.findByFirstName(OLGA);
+        List<PersonalTrainerDTO> personalTrainers = personalTrainerService.findByFirstName(OLGA);
         Assertions.assertEquals(Number.ONE, personalTrainers.size());
     }
 
     @Test
     void findByLastName() {
-        List<PersonalTrainer> personalTrainers = personalTrainerDao.findByLastName(NOVIKOVA);
+        List<PersonalTrainerDTO> personalTrainers = personalTrainerService.findByLastName(NOVIKOVA);
         Assertions.assertEquals(Number.ONE, personalTrainers.size());
     }
 
     @Test
     void findByGender() {
-        List<PersonalTrainer> personalTrainers = personalTrainerDao.findByGender(Gender.MALE);
+        List<PersonalTrainerDTO> personalTrainers = personalTrainerService.findByGender(Gender.MALE);
         Assertions.assertEquals(Number.ONE, personalTrainers.size());
     }
 
     @Test
     void findExperienceMore() {
-        List<PersonalTrainer> personalTrainers = personalTrainerDao.findExperienceMore(Number.TWO);
+        List<PersonalTrainerDTO> personalTrainers = personalTrainerService.findExperienceMore(Number.TWO);
         Assertions.assertEquals(Number.ONE, personalTrainers.size());
     }
 
+
     @Test
     void update() {
-        Session session = sessionFactory.getCurrentSession();
-        PersonalTrainer vitaliyZyev = PersonalTrainer.builder()
+        PersonalTrainer personalTrainer = PersonalTrainer.builder()
                 .firstName(VITALIY)
                 .lastName(ZYEV)
                 .experience(Number.TWO)
                 .gender(Gender.MALE)
                 .build();
-        Integer id = (Integer) session.save(vitaliyZyev);
-        vitaliyZyev.setExperience(Number.EIGHT);
-        personalTrainerDao.update(vitaliyZyev);
-        Optional<PersonalTrainer> maybePersonalTrainer = Optional.ofNullable(session.find(PersonalTrainer.class, id));
-        Assertions.assertTrue(maybePersonalTrainer.isPresent());
-        PersonalTrainer updatedPersonalTrainer = maybePersonalTrainer.get();
-        Assertions.assertEquals(updatedPersonalTrainer.getExperience(), vitaliyZyev.getExperience());
+        Session session = sessionFactory.openSession();
+        Integer id = (Integer) session.save(personalTrainer);
+        session.close();
+        personalTrainer.setExperience(Number.EIGHT);
+        PersonalTrainerDTO personalTrainerDTO = ModelMapper.map(personalTrainer, PersonalTrainerDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        Transaction transaction = currentSession.getTransaction();
+        personalTrainerService.update(personalTrainerDTO);
+        transaction.commit();
+        Optional<PersonalTrainer> optionalPersonalTrainer = Optional.ofNullable(currentSession.find(PersonalTrainer.class, id));
+        Assertions.assertTrue(optionalPersonalTrainer.isPresent());
+        PersonalTrainer updatePersonalTrainer = optionalPersonalTrainer.get();
+        Assertions.assertEquals(updatePersonalTrainer.getExperience(), personalTrainer.getExperience());
     }
 
     @Test
     void delete() {
-        Session session = sessionFactory.getCurrentSession();
-        PersonalTrainer vitaliyZyev = PersonalTrainer.builder()
+        PersonalTrainer personalTrainer = PersonalTrainer.builder()
                 .firstName(VITALIY)
                 .lastName(ZYEV)
                 .experience(Number.TWO)
                 .gender(Gender.MALE)
                 .build();
-        Integer id = (Integer) session.save(vitaliyZyev);
-        vitaliyZyev.setExperience(Number.EIGHT);
-        personalTrainerDao.delete(vitaliyZyev);
-        Optional<PersonalTrainer> maybeOrder = Optional.ofNullable(session.find(PersonalTrainer.class, id));
-        Assertions.assertFalse(maybeOrder.isPresent());
+        Session session = sessionFactory.openSession();
+        Integer id = (Integer) session.save(personalTrainer);
+        session.close();
+        PersonalTrainerDTO personalTrainerDTO = ModelMapper.map(personalTrainer, PersonalTrainerDTO.class);
+        Session currentSession = sessionFactory.getCurrentSession();
+        personalTrainerService.delete(personalTrainerDTO);
+        Optional<PersonalTrainer> optionalOrder = Optional.ofNullable(currentSession.find(PersonalTrainer.class, id));
+        Assertions.assertFalse(optionalOrder.isPresent());
     }
 }
