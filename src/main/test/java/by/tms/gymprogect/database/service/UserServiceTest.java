@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,7 @@ class UserServiceTest {
     private static final String PAVEL = "Pavel";
     private static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
     private static final String USER_GMAIL_COM = "user@gmail.com";
+    protected static final String PASSWORD = "pass";
     @Autowired
     private UserService userService;
     @Autowired
@@ -89,10 +91,9 @@ class UserServiceTest {
     }
 
     @Test
-    void findByEmail() {
-        Optional<UserDTO> maybeUser = userService.findByEmail(POPOVA_GMAIL_COM);
-        Assertions.assertTrue(maybeUser.isPresent());
-        maybeUser.ifPresent(user -> Assertions.assertEquals(POPOVA, user.getUserData().getLastName()));
+    void loadUserByUsername() {
+        UserDetails userDetails = userService.loadUserByUsername(POPOVA_GMAIL_COM);
+        Assertions.assertEquals(PASSWORD, userDetails.getPassword());
     }
 
     @Test
