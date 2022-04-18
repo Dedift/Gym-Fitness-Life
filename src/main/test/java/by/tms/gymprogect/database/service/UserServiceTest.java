@@ -42,7 +42,6 @@ class UserServiceTest {
     private static final String PAVEL = "Pavel";
     private static final String ANY_EMAIL_GMAIL_COM = "anyemail@gmail.com";
     private static final String USER_GMAIL_COM = "user@gmail.com";
-    protected static final String PASSWORD = "pass";
     @Autowired
     private UserService userService;
     @Autowired
@@ -93,7 +92,11 @@ class UserServiceTest {
     @Test
     void loadUserByUsername() {
         UserDetails userDetails = userService.loadUserByUsername(POPOVA_GMAIL_COM);
-        Assertions.assertEquals(PASSWORD, userDetails.getPassword());
+        UserDTO userDTO = UserDTO.builder().build();
+        if (userDetails instanceof UserDTO){
+            userDTO = (UserDTO) userDetails;
+        }
+        Assertions.assertEquals(POPOVA, userDTO.getUserData().getLastName());
     }
 
     @Test
