@@ -38,7 +38,7 @@ public class ExerciseDaoImpl extends BaseDAOImpl<Integer, Exercise> implements E
                 .where(
                         cb.equal(root.get(Exercise_.name), name)
                 );
-        Optional<Exercise> optionalExercise = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
+        Optional<Exercise> optionalExercise = session.createQuery(criteria).getResultList().stream().findFirst();
         logger.debug(FIND_EXERCISE_BY_NAME, optionalExercise, name);
         return optionalExercise;
     }

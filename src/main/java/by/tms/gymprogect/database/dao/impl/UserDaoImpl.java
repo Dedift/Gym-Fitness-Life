@@ -47,7 +47,7 @@ public class UserDaoImpl extends BaseDAOImpl<Integer, User> implements UserDao {
                 .where(
                         cb.equal(root.get(User_.email), email)
                 );
-        Optional<User> optionalUser = Optional.ofNullable(session.createQuery(criteria).getSingleResult());
+        Optional<User> optionalUser = session.createQuery(criteria).getResultList().stream().findFirst();
         logger.debug(FIND_USER_BY_EMAIL, optionalUser, email);
         return optionalUser;
     }
