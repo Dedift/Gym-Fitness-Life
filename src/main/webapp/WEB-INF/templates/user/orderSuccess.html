@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order page</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/userFragment::header}"></div>
+</div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h1>Your order has been completed successfully!</h1>
+        <h1>We wish you good training!</h1>
+    </div>
+    <div th:replace="~{fragments/userFragment::footer}"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Price page</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/price.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/adminFragment::header}"></div>
+<div class="container">
+    <div class="row">
+        <h1>Цены</h1>
+        <ul>
+            <li>Абонемент на месяц - 70р</li>
+            <li>Абонемент на полгода - 380р</li>
+            <li>Абонемент на год - 600р</li>
+            <li>Абонемент на 12 занятий - 76р</li>
+            <li>Абонемент на 24 занятий - 152р</li>
+            <li>Абонемент на 36 занятий - 227р</li>
+        </ul>
+    </div>
+    <div class="row">
+        <h1>Скидки</h1>
+        <ul>
+            <li>Больше занятий - больше скидка</li>
+            <li>Скидки постоянным клиентам до 5%</li>
+        </ul>
+    </div>
+</div>
+<div th:replace="~{fragments/adminFragment::footer}"></div>
+</body>
+</html>

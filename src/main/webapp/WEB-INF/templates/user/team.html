@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Team page</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/team.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/userFragment::header}"></div>
+<div class="container">
+    <div class="row">
+        <h2 class="text-center"><a th:href="@{/user/team}">Наша команда</a></h2>
+        <h4>состоит из сертифицированных тренеров, они помогут создать подходящую
+            именно вам тренировочную
+            программу и схему питания, поставят вам правильную технику выполнения упражнений, а также составят вам
+            приятную компанию на каждой тренировке.</h4>
+    </div>
+    <div class="form-group" th:object="${allTrainers}">
+        <label for="trainers"><h4 th:text="Trainers"></h4></label>
+        <div id="trainers" th:each="trainer : ${allTrainers}">
+            <div>
+                <h5 th:text="${trainer.firstName} + ' ' + ${trainer.lastName} + ' (experience - ' + ${trainer.experience} + ' years)'"></h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/userFragment::footer}"></div>
+</body>
+</html>

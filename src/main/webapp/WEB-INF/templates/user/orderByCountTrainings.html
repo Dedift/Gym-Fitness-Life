@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order page</title>
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/order.css}">
+    <script th:src="@{/resources/js/bootstrap.js}"></script>
+</head>
+<body>
+<div th:replace="~{fragments/userFragment::header}"></div>
+</div>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Your order</h2>
+    </div>
+    <div class="row">
+        <form th:method="post" th:action="@{/user/orderSuccess}" th:object="${order}"
+              enctype="application/x-www-form-urlencoded">
+            <h4 class="mb-3 text-center">Purpose</h4>
+            <div class="my-3">
+                <div class="form-check">
+                    <input id="muscle" name="purpose" type="radio" class="form-check-input"
+                           th:field="*{purpose}" th:value="MUSCLE" checked required>
+                    <label class="form-check-label" for="muscle">Muscle</label>
+                </div>
+                <div class="form-check">
+                    <input id="fatBurning" name="purpose" type="radio" class="form-check-input"
+                           th:field="*{purpose}" th:value="FAT_BURNING" required>
+                    <label class="form-check-label" for="fatBurning">Fat burning</label>
+                </div>
+            </div>
+            <h4 class="mb-3 text-center">Count trainings</h4>
+            <div class="my-3">
+                <div class="form-check">
+                    <input id="12" name="season" type="radio" class="form-check-input"
+                           th:field="*{countTrain}" th:value="12" checked required>
+                    <label class="form-check-label" for="12">12 trainings</label>
+                </div>
+                <div class="form-check">
+                    <input id="24" name="season" type="radio" class="form-check-input"
+                           th:field="*{countTrain}" th:value="24" checked required>
+                    <label class="form-check-label" for="24">24 trainings</label>
+                </div>
+                <div class="form-check">
+                    <input id="36" name="season" type="radio" class="form-check-input"
+                           th:field="*{countTrain}" th:value="36" checked required>
+                    <label class="form-check-label" for="36">36 trainings</label>
+                </div>
+            </div>
+            <div class="my-3">
+                <hr class="my-4">
+                <h4 class="mb-3 text-center">Payment</h4>
+                <div class="my-3">
+                    <div class="form-check">
+                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                        <label class="form-check-label" for="credit">Credit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                        <label class="form-check-label" for="debit">Debit card</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+                        <label class="form-check-label" for="paypal">PayPal</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="cc-name" class="form-label">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                            Name on card is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-6">
+                        <label for="cc-number" class="form-label">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Credit card number is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="cc-expiration" class="form-label">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Expiration date required
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-6">
+                        <label for="cc-cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Security code required
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <div class="text-center">
+                    <button class="w-50 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragments/userFragment::footer}"></div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+a {
+    color: white;
+    text-decoration: none;
+}
+
+#aboutGym {
+    color: white;
+    padding-left: 900px;
+    padding-top: 100px;
+}
+
+#bestDay {
+    color: white;
+    padding-top: 50px;
+}
+
+#order {
+    padding-top: 150px;
+    color: white;
+}
+
+p {
+    font-size: larger;
+}
+
+#team{
+    color: white;
+    padding-top: 250px;
+}
+
+body {
+    background-image: url("/resources/images/back11.jpg");
+}
