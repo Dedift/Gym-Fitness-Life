@@ -23,7 +23,8 @@
                     <input name="password" type="password" class="form-control" id="exampleInputPassword" required>
                 </div>
                 <button type="submit" class="btn btn-primary" th:text="#{register.submit}">Submit</button>
-                <div class="form-text" th:text="#{register.haveAcc}">Already have an account?
+                <div class="form-text">
+                    <span th:text="#{register.haveAcc}">Have acc</span>
                     <a th:href="@{/login}" th:text="#{register.signIn}">Sign in</a>
                 </div>
             </form>
