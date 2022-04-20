@@ -11,8 +11,8 @@
 </div>
 <div class="container">
     <div class="py-5 text-center">
-        <h1>Your order has been completed successfully!</h1>
-        <h1>We wish you good training!</h1>
+        <h1 th:text="#{order.success}">Success</h1>
+        <h1 th:text="#{order.goodTraining}">Good training</h1>
     </div>
     <div th:replace="~{fragments/userFragment::footer}"></div>
 </div>

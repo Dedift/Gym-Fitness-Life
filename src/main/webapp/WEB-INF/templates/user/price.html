@@ -11,24 +11,24 @@
 <div th:replace="~{fragments/userFragment::header}"></div>
 <div class="container">
     <div class="row">
-        <h1>Цены</h1>
+        <h1 th:text="#{price.price}">Prices</h1>
         <ul>
-            <li>Абонемент на месяц - 70р</li>
-            <li>Абонемент на полгода - 380р</li>
-            <li>Абонемент на год - 600р</li>
-            <li>Абонемент на 12 занятий - 76р</li>
-            <li>Абонемент на 24 занятий - 152р</li>
-            <li>Абонемент на 36 занятий - 227р</li>
+            <li th:text="#{price.subForMonth}">Sub for month</li>
+            <li th:text="#{price.subForSix}">Sub for six month</li>
+            <li th:text="#{price.subForYear}">Sub for year</li>
+            <li th:text="#{price.subForTwelve}">Sub for twelve</li>
+            <li th:text="#{price.subForTwenty}">Sub for twenty</li>
+            <li th:text="#{price.subForThirty}">Sub for thirty</li>
         </ul>
     </div>
     <div class="row">
-        <h1>Скидки</h1>
+        <h1 th:text="#{price.sale}">Sales</h1>
         <ul>
-            <li>Больше занятий - больше скидка</li>
-            <li>Скидки постоянным клиентам до 5%</li>
+            <li th:text="#{price.moreTrain}">More trainings</li>
+            <li th:text="#{price.sales}">Sales for clients</li>
         </ul>
-        <h1><a th:href="@{/user/orderBySeason}">Заказать абонемент по времени</a></h1>
-        <h1><a th:href="@{/user/orderByCountTrainings}">Заказать абонемент по занятиям</a></h1>
+        <h4><a th:href="@{/user/orderBySeason}" th:text="#{price.orderByTime}">Order by time</a></h4>
+        <h4><a th:href="@{/user/orderByCountTrainings}" th:text="#{price.orderByCount}">Order by count</a></h4>
     </div>
 </div>
 <div th:replace="~{fragments/userFragment::footer}"></div>

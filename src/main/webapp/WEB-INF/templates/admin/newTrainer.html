@@ -7,33 +7,33 @@
     <script th:src="@{/resources/js/bootstrap.js}"></script>
 </head>
 <body>
-<div th:replace="~{fragments/registrationFragment::header}"></div>
+<div th:replace="~{fragments/adminFragment::header}"></div>
 <div class="container">
     <div class="row justify-content-center mt-10">
         <div class="col-5 mt-5 p-3">
             <form th:method="post" th:action="@{/admin/newTrainer}" enctype="application/x-www-form-urlencoded" th:object="${trainer}">
                 <div class="mb-3">
-                    <label for="firstName" class="form-label">First name</label>
+                    <label for="firstName" class="form-label" th:text="#{newTrainer.firstName}">First name</label>
                     <input name="firstName" type="text" class="form-control" id="firstName">
                 </div>
                 <div class="mb-3">
-                    <label for="lastName" class="form-label">Last name</label>
+                    <label for="lastName" class="form-label" th:text="#{newTrainer.lastName}">Last name</label>
                     <input name="lastName" type="text" class="form-control" id="lastName" required>
                 </div>
                 <div class="mb-3">
-                    <label for="experience" class="form-label">Experience</label>
+                    <label for="experience" class="form-label" th:text="#{newTrainer.experience}">Experience</label>
                     <input name="experience" type="text" class="form-control" id="experience" required>
                 </div>
-                <label class="form-label">Gender</label>
+                <label class="form-label" th:text="#{register.gender}">Gender</label>
                 <div class="form-check" >
                     <input id="male" name="gender" type="radio" class="form-check-input" th:field="*{gender}" th:value="MALE" checked required>
-                    <label class="form-check-label" for="male">Male</label>
+                    <label class="form-check-label" for="male" th:text="#{register.male}">Male</label>
                 </div>
                 <div class="form-check">
                     <input id="female" name="gender" type="radio" class="form-check-input" th:field="*{gender}" th:value="FEMALE" required>
-                    <label class="form-check-label" for="female">Female</label>
+                    <label class="form-check-label" for="female" th:text="#{register.female}">Female</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" th:text="#{register.submit}">Submit</button>
             </form>
         </div>
     </div>

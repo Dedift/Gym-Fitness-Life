@@ -11,65 +11,63 @@
 <div th:replace="~{fragments/userFragment::header}"></div>
             </div>
 <div class="container">
-    <div class="py-5 text-center">
-        <h2>Your order</h2>
-    </div>
+        <h2 class="text-center" th:text="#{order.yourOrder}">Your order</h2>
     <div class="row">
         <form th:method="post" th:action="@{/user/orderSuccess}" th:object="${order}"
               enctype="application/x-www-form-urlencoded">
-            <h4 class="mb-3 text-center">Purpose</h4>
+            <h4 class="mb-3 text-center" th:text="#{order.purpose}">Purpose</h4>
             <div class="my-3">
                 <div class="form-check">
                     <input id="muscle" name="purpose" type="radio" class="form-check-input"
                            th:field="*{purpose}" th:value="MUSCLE" checked required>
-                    <label class="form-check-label" for="muscle">Muscle</label>
+                    <label class="form-check-label" for="muscle" th:text="#{order.muscle}">Muscle</label>
                 </div>
                 <div class="form-check">
                     <input id="fatBurning" name="purpose" type="radio" class="form-check-input"
                            th:field="*{purpose}" th:value="FAT_BURNING" required>
-                    <label class="form-check-label" for="fatBurning">Fat burning</label>
+                    <label class="form-check-label" for="fatBurning" th:text="#{order.fatBurning}">Fat burning</label>
                 </div>
             </div>
-            <h4 class="mb-3 text-center">Season</h4>
+            <h4 class="mb-3 text-center" th:text="#{order.season}">Season</h4>
             <div class="my-3">
                 <div class="form-check">
                     <input id="month" name="season" type="radio" class="form-check-input"
                            th:field="*{season}" th:value="MONTH" checked required>
-                    <label class="form-check-label" for="month">month</label>
+                    <label class="form-check-label" for="month" th:text="#{order.month}">month</label>
                 </div>
                 <div class="form-check">
                     <input id="six month" name="season" type="radio" class="form-check-input"
                            th:field="*{season}" th:value="SIX_MONTHS" checked required>
-                    <label class="form-check-label" for="six month">six months</label>
+                    <label class="form-check-label" for="six month" th:text="#{order.sixMonth}">six months</label>
                 </div>
                 <div class="form-check">
                     <input id="year" name="season" type="radio" class="form-check-input"
                            th:field="*{season}" th:value="YEAR" checked required>
-                    <label class="form-check-label" for="year">year</label>
+                    <label class="form-check-label" for="year" th:text="#{order.year}">year</label>
                 </div>
             </div>
             <div class="my-3">
                 <hr class="my-4">
-                <h4 class="mb-3 text-center">Payment</h4>
+                <h4 class="mb-3 text-center" th:text="#{order.payment}">Payment</h4>
                 <div class="my-3">
                     <div class="form-check">
                         <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                        <label class="form-check-label" for="credit">Credit card</label>
+                        <label class="form-check-label" for="credit" th:text="#{order.creditCard}">Credit card</label>
                     </div>
                     <div class="form-check">
                         <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="debit">Debit card</label>
+                        <label class="form-check-label" for="debit" th:text="#{order.debitCard}">Debit card</label>
                     </div>
                     <div class="form-check">
                         <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="paypal">PayPal</label>
+                        <label class="form-check-label" for="paypal" th:text="#{order.payPal}">PayPal</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="cc-name" class="form-label">Name on card</label>
-                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                        <small class="text-muted">Full name as displayed on card</small>
+                        <label for="cc-name" class="form-label" th:text="#{order.nameOnCard}">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" required>
+                        <small class="text-muted" th:text="#{order.fullNameCard}">Full name as displayed on card</small>
                         <div class="invalid-feedback">
                             Name on card is required
                         </div>
@@ -77,8 +75,8 @@
                 </div>
                 <div class="row my-3">
                     <div class="col-md-6">
-                        <label for="cc-number" class="form-label">Credit card number</label>
-                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                        <label for="cc-number" class="form-label" th:text="#{order.cardNumber}">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" required>
                         <div class="invalid-feedback">
                             Credit card number is required
                         </div>
@@ -86,8 +84,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="cc-expiration" class="form-label">Expiration</label>
-                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                        <label for="cc-expiration" class="form-label" th:text="#{order.expiration}">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" required>
                         <div class="invalid-feedback">
                             Expiration date required
                         </div>
@@ -95,8 +93,8 @@
                 </div>
                 <div class="row my-3">
                     <div class="col-md-6">
-                        <label for="cc-cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                        <label for="cc-cvv" class="form-label" th:text="#{order.cvv}">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" required>
                         <div class="invalid-feedback">
                             Security code required
                         </div>
@@ -105,7 +103,7 @@
 
                 <hr class="my-4">
                 <div class="text-center">
-                    <button class="w-50 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                    <button class="w-50 btn btn-primary btn-lg" type="submit" th:text="#{order.pay}">Pay for a subscription</button>
                 </div>
             </div>
         </form>

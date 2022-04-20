@@ -11,11 +11,11 @@
 <div th:replace="~{fragments/userFragment::header}"></div>
 <div class="container">
     <div class="text-center">
-        <h4 th:text="'Hello ' + ${user.email}"></h4>
+        <h4 th:text="#{myProfile.hello} + ${user.email}"></h4>
         <div class="form-group">
-                <label for="trainingDay"><h3 th:text="'Your training program'">TrainingProgram</h3></label>
+                <label for="trainingDay"><h3 th:text="#{myProfile.yourTP}">TrainingProgram</h3></label>
                 <div id="trainingDay" th:each="trainingDay : ${user.trainingProgramDTO}">
-                    <label for="exercise"><h3 th:text="'Training day'">TrainingDay</h3></label>
+                    <label for="exercise"><h3 th:text="#{myProfile.trainingDay}">TrainingDay</h3></label>
                     <div id="exercise" th:each="exercise : ${trainingDay.exercisesDTO}">
                             <h5 th:text="${exercise.name}"></h5>
                 </div>

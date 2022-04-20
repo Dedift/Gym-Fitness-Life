@@ -11,34 +11,29 @@
 <div th:replace="~{fragments/adminFragment::header}"></div>
 <div class="container">
     <div class="row">
-        <h1 class="text-center" id="bestDay">Best day for train — today!</h1>
+        <h1 class="text-center" id="bestDay" th:text="#{home.bestDay}">Best day</h1>
     </div>
     <div class="row">
         <div id="aboutGym">
-            <h2><a th:href="@{/admin/information}" title="About gym">About gym</a></h2>
-            <p>Fitness life - это 200 кв.м. для качественных тренировок, новейшее оборудование, мотивирующая
-                атмосфера и доступные цены. Тренажерный зал расположен недалеко от метро.
-                Комфортная обстановка, душевые в каждой раздевалке, мощная вентиляция с рекуперацией.</p>
+            <h2><a th:href="@{/admin/information}" th:text="#{home.aboutGym}">About gym</a></h2>
+            <p th:text="#{home.fitnessLife}">Fitness life</p>
             <ul>
-                <li>Большая кардиозона</li>
-                <li>Свободные веса</li>
-                <li>Силовое оборудование на все группы мышц</li>
-                <li>Индивидуальные занятия с тренером</li>
+                <li th:text="#{home.cardioZone}">Cardio zone</li>
+                <li th:text="#{home.freeWeights}">Free weights</li>
+                <li th:text="#{home.powerEquipment}">Power equipment</li>
+                <li th:text="#{home.individualTrainings}">Individual trainings</li>
             </ul>
         </div>
     </div>
     <div class="row" id="team">
         <div class="col-6">
-            <h2><a th:href="@{/admin/team}">Наша команда</a></h2>
-            <p>состоит из сертифицированных тренеров, они помогут создать подходящую
-                именно вам тренировочную
-                программу и схему питания, поставят вам правильную технику выполнения упражнений, а также составят вам
-                приятную компанию на каждой тренировке.</p>
+            <h2><a th:href="@{/admin/team}" th:text="#{home.ourTeam}">Our team</a></h2>
+            <p th:text="#{home.certifiedTrainers}">Certified trainers</p>
         </div>
     </div>
     <div class="row" id="order">
-        <h1 class="text-center">Приходите, мы вам всегда рады!<br><a th:href="@{/admin/price}" title="Order">Order a
-            subscription</a></h1>
+        <h1 class="text-center" th:text="#{home.welcome}">Welcome</h1>
+        <h1 class="text-center"><a th:href="@{/admin/price}" th:text="#{home.orderSubscription}">Order</a></h1>
     </div>
 </div>
 <div th:replace="~{fragments/adminFragment::footer}"></div>

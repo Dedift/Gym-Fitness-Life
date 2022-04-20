@@ -13,24 +13,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" th:href="@{/user/home}">Home</a>
+                            <a class="nav-link active" aria-current="page" th:href="@{/user/home}"
+                               th:text="#{fragment.home}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/user/information}">About gym</a>
+                            <a class="nav-link active" th:href="@{/user/information}" th:text="#{home.aboutGym}">About gym</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/user/price}">Price</a>
+                            <a class="nav-link active" th:href="@{/user/price}" th:text="#{price.price}">Price</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/user/team}">Our team</a>
+                            <a class="nav-link active" th:href="@{/user/team}" th:text="#{home.ourTeam}">Our team</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" th:href="@{/user/myProfile}">My profile</a>
+                            <a class="nav-link active" th:href="@{/user/myProfile}"
+                               th:text="#{fragment.myProfile}">My profile</a>
                         </li>
                     </ul>
                     <form class="d-flex">
                         <a th:id="Lang" class="btn" th:href="@{?lang=en_US}">English</a>
                         <a th:id="Lang" class="btn" th:href="@{?lang=ru_RU}">Русский</a>
+                        <a th:id="Lang" class="btn" th:href="@{/logout}" th:text="#{fragment.logout}">Logout</a>
                     </form>
                 </div>
             </div>

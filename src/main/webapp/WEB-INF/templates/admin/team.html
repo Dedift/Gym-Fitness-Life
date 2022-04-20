@@ -11,21 +11,18 @@
 <div th:replace="~{fragments/adminFragment::header}"></div>
 <div class="container">
     <div class="row">
-        <h2 class="text-center"><a th:href="@{/admin/team}">Наша команда</a></h2>
-        <h4>состоит из сертифицированных тренеров, они помогут создать подходящую
-            именно вам тренировочную
-            программу и схему питания, поставят вам правильную технику выполнения упражнений, а также составят вам
-            приятную компанию на каждой тренировке.</h4>
+        <h2 class="text-center" th:href="@{/user/team}" th:text="#{home.ourTeam}">Our team</h2>
+        <h4 th:text="#{home.certifiedTrainers}">Certified trainers</h4>
     </div>
     <div class="form-group" th:object="${allTrainers}">
         <label for="trainers"><h4 th:text="Trainers"></h4></label>
         <div id="trainers" th:each="trainer : ${allTrainers}">
             <div>
-                <h5 th:text="${trainer.firstName} + ' ' + ${trainer.lastName} + ' (experience - ' + ${trainer.experience} + ' years)'"></h5>
+                <h5 th:text="${trainer.firstName} + ' ' + ${trainer.lastName} + ' ' + #{team.experience} +
+                ${trainer.experience} + ' ' + #{team.year}"></h5>
             </div>
         </div>
     </div>
-    <h4><a th:href="@{/admin/newTrainer}" th:text="'Add new trainer'"></a></h4>
 </div>
 <div th:replace="~{fragments/adminFragment::footer}"></div>
 </body>
