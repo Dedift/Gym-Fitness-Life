@@ -55,7 +55,6 @@ public class User extends BaseEntity<Integer> {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<Subscription> subscriptions = new ArrayList<>();
-    private LocalDate dateOfBirth;
     @Embedded
     private UserData userData;
     @Enumerated(EnumType.STRING)

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,6 +31,7 @@ import java.util.Objects;
 @Table(schema = "gym_schema", name = "orders")
 public class Order extends BaseEntity<Integer> {
 
+    @Column(name = "count_trains")
     private int countTrain;
     @Enumerated(EnumType.STRING)
     private Purpose purpose;

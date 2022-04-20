@@ -32,7 +32,6 @@ public class UserDTO extends BaseDTO<Integer> implements UserDetails {
     private Gender gender;
     private List<TrainingDayDTO> trainingProgramDTO;
     private List<SubscriptionDTO> subscriptionsDTO;
-    private LocalDate dateOfBirth;
     private UserData userData;
     private Role role;
     private PersonalTrainerDTO personalTrainerDTO;

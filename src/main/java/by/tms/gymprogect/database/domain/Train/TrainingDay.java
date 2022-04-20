@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -30,7 +31,9 @@ import java.util.List;
 @Entity
 @Table(schema = "gym_schema", name = "training_day")
 public class TrainingDay extends BaseEntity<Integer> {
+    @Column(name = "count_sets_per_exercise")
     private int countSetsPerExercise;
+    @Column(name = "count_repetitions_per_set")
     private int countRepetitionsPerSet;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

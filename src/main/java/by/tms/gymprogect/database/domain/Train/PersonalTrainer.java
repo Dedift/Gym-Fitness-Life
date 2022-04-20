@@ -14,6 +14,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +35,9 @@ import java.util.Set;
 @Table(schema = "gym_schema", name = "personal_trainer")
 public class PersonalTrainer extends BaseEntity<Integer> {
 
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
     @Enumerated(EnumType.STRING)
     private Gender gender;
